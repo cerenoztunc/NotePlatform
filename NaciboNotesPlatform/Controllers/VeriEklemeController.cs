@@ -1,4 +1,4 @@
-﻿using Project.DLL.DesignPatterns.GenericRepository.ConcRep;
+﻿using Project.BLL.DesignPatterns.GenericRepository.ConcRep;
 using Project.ENTITIES.Models;
 using System;
 using System.Collections.Generic;

@@ -1,6 +1,6 @@
 ﻿using Project.DAL.Context;
-using Project.DLL.DesignPatterns.GenericRepository.IntRep;
-using Project.DLL.DesignPatterns.SingletonPattern;
+using Project.BLL.DesignPatterns.GenericRepository.IntRep;
+using Project.BLL.DesignPatterns.SingletonPattern;
 using Project.ENTITIES.Models;
 using System;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Project.DLL.DesignPatterns.GenericRepository.BaseRep
+namespace Project.BLL.DesignPatterns.GenericRepository.BaseRep
 {
     public class BaseRepository<T> : IRepository<T> where T : BaseEntity
     {
@@ -129,6 +129,11 @@ namespace Project.DLL.DesignPatterns.GenericRepository.BaseRep
         }
 
         public List<T> Where(Expression<Func<T, bool>> exp)
+        {
+            return _db.Set<T>().Where(exp).ToList();
+        }
+
+        public List<T> List(Expression<Func<T, bool>> exp)
         {
             return _db.Set<T>().Where(exp).ToList();
         }

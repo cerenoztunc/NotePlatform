@@ -1,0 +1,34 @@
+﻿ <!-- Categories widget-->
+
+@{ CategoryRep _cRep = new CategoryRep();
+    List<Category> list = _cRep.GetAll(); 
+ }
+
+<div class="card-header">Kategoriler</div>
+<div class="card-body">
+    <div class="row">
+        <div class="col-sm-6">
+            <ul class="list-unstyled mb-0">
+                <li>
+                    <a href="/Home/Index">
+                        <span class="glyphicon glyphicon-arrow-right"> </span> Tümü
+                    </a>
+                </li>
+
+                @foreach (Category item in list)
+                {
+                    <li>
+                         <a href="/Home/ByCategory/@item.ID" title="@item.Description">
+                             <span class="glyphicon glyphicon-arrow-right"> </span> @item.Title
+                         </a>
+                        <br />
+                    </li>
+                }
+
+
+            </ul>
+        </div>
+
+    </div>
+</div>
+

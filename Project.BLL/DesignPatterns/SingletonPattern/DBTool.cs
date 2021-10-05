@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Project.DLL.DesignPatterns.SingletonPattern
+namespace Project.BLL.DesignPatterns.SingletonPattern
 {
     public class DBTool
     {

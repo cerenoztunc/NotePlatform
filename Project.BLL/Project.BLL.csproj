@@ -53,6 +53,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BussinessLayerResult.cs" />
     <Compile Include="DesignPatterns\GenericRepository\BaseRep\BaseRepository.cs" />
     <Compile Include="DesignPatterns\GenericRepository\ConcRep\CategoryRep.cs" />
     <Compile Include="DesignPatterns\GenericRepository\ConcRep\CommentRep.cs" />
@@ -62,6 +63,7 @@
     <Compile Include="DesignPatterns\GenericRepository\IntRep\IRepository.cs" />
     <Compile Include="DesignPatterns\SingletonPattern\DBTool.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserManager\NaciboUserManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

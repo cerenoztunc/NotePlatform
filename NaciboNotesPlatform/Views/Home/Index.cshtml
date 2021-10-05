@@ -1,4 +1,4 @@
-﻿
+﻿@model List<Note>
 @{
     ViewBag.Title = "Index";
 }
@@ -26,11 +26,121 @@
                     <a class="btn btn-primary" href="#!">Read more →</a>
                 </div>
             </div>
-            <!-- Nested row for non-featured blog posts-->
+            <!-- Notlar-->
             <div class="row">
-                <div class="col-lg-4">
+                @foreach (Note item in Model)
+                {
+                    <div class="col-lg-4">
+                        <!-- Blog post-->
+                        <div class="card mb-4">
+                            <a href="#!">
+                                <img class="card-img-top" src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="@item.Title" />
+                            </a>
+                            <div class="card-body">
+                                <div class="small text-muted pull-right">
+                                    <span class="glyphicon glyphicon-user"></span>
+                                    @if (item.NaciboUser.UserName == null)
+                                    {
+                                        @(item.NaciboUser.UserName = "cerenoztunc")
+                                        
+                                    }
+                                    else
+                                    {
+                                        @item.NaciboUser.UserName
+                                    }
+
+                                </div><br />
+                                <div class="small text-muted pull-right">
+                                    <span class="glyphicon glyphicon-time"></span> 
+                                    @if(item.ModifiedDate != null)
+                                    {
+                                        @item.ModifiedDate
+                                    }
+                                    else
+                                    {
+                                        @item.CreatedDate
+                                    }
+                                </div>
+                                <h2 class="card-title h4">
+                                    @if (item.Title.Length > 8)
+                                    {
+                                        @item.Title.Substring(0, 8)
+                                    }
+                                    else
+                                    {
+                                        @item.Title
+                                    }
+
+                                </h2>
+                                <p class="card-text">
+                                    @if (item.Text != null && item.Text.Length < 60)
+                                    {
+                                        @item.Text
+                                        <br />
+                                        <a class="btn btn-primary btn-sm" href="#!">Tümü →</a> 
+                                        
+                                    }
+                                    else
+                                    {
+                                        @(item.Text.Substring(0,57) + "...")
+                                        
+                                        <a class="btn btn-primary btn-sm" href="#!">Devamı →</a> 
+                                        
+                                    }
+
+                                    <hr />
+                                </p>
+
+                                
+                                <div class="ratings">
+                                    <p class="pull-right">
+                                        <button class="btn btn-default btn-sm" style="color:#e15959;">
+                                            <span class="glyphicon glyphicon-comment"></span> Yorumlar
+                                        </button>
+                                    </p>
+                                    <p>
+                                        <button class="btn btn-default btn-sm" type="button" style="color: #e15959;">
+                                            <span class="glyphicon glyphicon-heart-empty"></span> @item.LikeCount
+                                        </button>
+
+                                    </p>
+                                </div>
+
+                            </div>
+                        </div>
+                        
+                    </div>
+                }
+
+                <!--<div class="col-lg-4">-->
                     <!-- Blog post-->
-                    <div class="card mb-4">
+                    <!--<div class="card mb-4">
+                        <a href="#!"><img class="card-img-top" src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="..." /></a>
+                        <div class="card-body">
+                            <div class="small text-muted pull-right"><span class="glyphicon glyphicon-user"></span> cerenoztunc </div><br />
+                            <div class="small text-muted pull-right"><span class="glyphicon glyphicon-time"></span> January 1, 2021</div>
+                            <h2 class="card-title h4">Post Title</h2>
+                            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+
+                            <a class="btn btn-primary" href="#!">Read more →</a> <hr />
+                            <div class="ratings">
+                                <p class="pull-right">
+                                    <button class="btn btn-default btn-sm" style="color:#e15959;">
+                                        <span class="glyphicon glyphicon-comment"></span> Yorumlar
+                                    </button>
+                                </p>
+                                <p>
+                                    <button class="btn btn-default btn-sm" type="button" style="        color: #e15959;">
+                                        <span class="glyphicon glyphicon-heart-empty"></span> 15
+                                    </button>
+
+                                </p>
+                            </div>
+
+                        </div>
+                    </div>-->
+                    <!-- Blog post-->
+                    <!--<div class="card mb-4">
                         <a href="#!"><img class="card-img-top" src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="..." /></a>
                         <div class="card-body">
                             <div class="small text-muted pull-right"><span class="glyphicon glyphicon-user"></span> cerenoztunc </div><br />
@@ -55,8 +165,36 @@
 
                         </div>
                     </div>
+                </div>-->
+                <!--<div class="col-lg-4">-->
                     <!-- Blog post-->
-                    <div class="card mb-4">
+                    <!--<div class="card mb-4">
+                        <a href="#!"><img class="card-img-top" src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="..." /></a>
+                        <div class="card-body">
+                            <div class="small text-muted pull-right"><span class="glyphicon glyphicon-user"></span> cerenoztunc </div><br />
+                            <div class="small text-muted pull-right"><span class="glyphicon glyphicon-time"></span> January 1, 2021</div>
+                            <h2 class="card-title h4">Post Title</h2>
+                            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+
+                            <a class="btn btn-primary" href="#!">Read more →</a> <hr />
+                            <div class="ratings">
+                                <p class="pull-right">
+                                    <button class="btn btn-default btn-sm" style="color:#e15959;">
+                                        <span class="glyphicon glyphicon-comment"></span> Yorumlar
+                                    </button>
+                                </p>
+                                <p>
+                                    <button class="btn btn-default btn-sm" type="button" style="        color: #e15959;">
+                                        <span class="glyphicon glyphicon-heart-empty"></span> 15
+                                    </button>
+
+                                </p>
+                            </div>
+
+                        </div>
+                    </div>-->
+                    <!-- Blog post-->
+                    <!--<div class="card mb-4">
                         <a href="#!"><img class="card-img-top" src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="..." /></a>
                         <div class="card-body">
                             <div class="small text-muted pull-right"><span class="glyphicon glyphicon-user"></span> cerenoztunc </div><br />
@@ -81,116 +219,9 @@
 
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-4">
-                    <!-- Blog post-->
-                    <div class="card mb-4">
-                        <a href="#!"><img class="card-img-top" src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="..." /></a>
-                        <div class="card-body">
-                            <div class="small text-muted pull-right"><span class="glyphicon glyphicon-user"></span> cerenoztunc </div><br />
-                            <div class="small text-muted pull-right"><span class="glyphicon glyphicon-time"></span> January 1, 2021</div>
-                            <h2 class="card-title h4">Post Title</h2>
-                            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-
-                            <a class="btn btn-primary" href="#!">Read more →</a> <hr />
-                            <div class="ratings">
-                                <p class="pull-right">
-                                    <button class="btn btn-default btn-sm" style="color:#e15959;">
-                                        <span class="glyphicon glyphicon-comment"></span> Yorumlar
-                                    </button>
-                                </p>
-                                <p>
-                                    <button class="btn btn-default btn-sm" type="button" style="        color: #e15959;">
-                                        <span class="glyphicon glyphicon-heart-empty"></span> 15
-                                    </button>
-
-                                </p>
-                            </div>
-
-                        </div>
-                    </div>
-                    <!-- Blog post-->
-                    <div class="card mb-4">
-                        <a href="#!"><img class="card-img-top" src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="..." /></a>
-                        <div class="card-body">
-                            <div class="small text-muted pull-right"><span class="glyphicon glyphicon-user"></span> cerenoztunc </div><br />
-                            <div class="small text-muted pull-right"><span class="glyphicon glyphicon-time"></span> January 1, 2021</div>
-                            <h2 class="card-title h4">Post Title</h2>
-                            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-
-                            <a class="btn btn-primary" href="#!">Read more →</a> <hr />
-                            <div class="ratings">
-                                <p class="pull-right">
-                                    <button class="btn btn-default btn-sm" style="color:#e15959;">
-                                        <span class="glyphicon glyphicon-comment"></span> Yorumlar
-                                    </button>
-                                </p>
-                                <p>
-                                    <button class="btn btn-default btn-sm" type="button" style="        color: #e15959;">
-                                        <span class="glyphicon glyphicon-heart-empty"></span> 15
-                                    </button>
-
-                                </p>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <!-- Blog post-->
-                    <div class="card mb-4">
-                        <a href="#!"><img class="card-img-top" src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="..." /></a>
-                        <div class="card-body">
-                            <div class="small text-muted pull-right"><span class="glyphicon glyphicon-user"></span> cerenoztunc </div><br />
-                            <div class="small text-muted pull-right"><span class="glyphicon glyphicon-time"></span> January 1, 2021</div>
-                            <h2 class="card-title h4">Post Title</h2>
-                            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-
-                            <a class="btn btn-primary" href="#!">Read more →</a> <hr />
-                            <div class="ratings">
-                                <p class="pull-right">
-                                    <button class="btn btn-default btn-sm" style="color:#e15959;">
-                                        <span class="glyphicon glyphicon-comment"></span> Yorumlar
-                                    </button>
-                                </p>
-                                <p>
-                                    <button class="btn btn-default btn-sm" type="button" style="        color: #e15959;">
-                                        <span class="glyphicon glyphicon-heart-empty"></span> 15
-                                    </button>
-
-                                </p>
-                            </div>
-
-                        </div>
-                    </div>
-                    <!-- Blog post-->
-                    <div class="card mb-4">
-                        <a href="#!"><img class="card-img-top" src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="..." /></a>
-                        <div class="card-body">
-                            <div class="small text-muted pull-right"><span class="glyphicon glyphicon-user"></span> cerenoztunc </div><br />
-                            <div class="small text-muted pull-right"><span class="glyphicon glyphicon-time"></span> January 1, 2021</div>
-                            <h2 class="card-title h4">Post Title</h2>
-                            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-
-                            <a class="btn btn-primary" href="#!">Read more →</a> <hr />
-                            <div class="ratings">
-                                <p class="pull-right">
-                                    <button class="btn btn-default btn-sm" style="color:#e15959;">
-                                        <span class="glyphicon glyphicon-comment"></span> Yorumlar
-                                    </button>
-                                </p>
-                                <p>
-                                    <button class="btn btn-default btn-sm" type="button" style="        color: #e15959;">
-                                        <span class="glyphicon glyphicon-heart-empty"></span> 15
-                                    </button>
-
-                                </p>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
+                </div>-->
             </div>
+            
             <!-- Pagination-->
             <nav aria-label="Pagination">
                 <hr class="my-0" />
@@ -205,6 +236,7 @@
                 </ul>
             </nav>
         </div>
+       
         <!-- Side widgets-->
         <div class="col-lg-4">
             <!-- Search widget-->
@@ -219,49 +251,7 @@
             </div>
             <!-- Categories widget-->
             <div class="card mb-4">
-                <div class="card-header">Kategoriler</div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <ul class="list-unstyled mb-0">
-                                <li>
-                                    <a href="#!">
-                                        <span class="glyphicon glyphicon-arrow-right"> </span> Tümü
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#!">
-                                        <span class="glyphicon glyphicon-arrow-right"> </span> HTML
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#!">
-                                        <span class="glyphicon glyphicon-arrow-right"> </span> Freebies
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="col-sm-6">
-                            <ul class="list-unstyled mb-0">
-                                <li>
-                                    <a href="#!">
-                                        <span class="glyphicon glyphicon-arrow-right"> </span> Tümü
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#!">
-                                        <span class="glyphicon glyphicon-arrow-right"> </span> HTML
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#!">
-                                        <span class="glyphicon glyphicon-arrow-right"> </span> Freebies
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
+                @Html.Partial("_PartialCategories")
             </div>
             <!-- Side widget-->
             <div class="card mb-4">

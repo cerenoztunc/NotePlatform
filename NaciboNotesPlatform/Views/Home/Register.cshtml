@@ -1,0 +1,44 @@
+﻿
+@model RegisterVM
+@{
+    ViewBag.Title = "NaciboNotes - Kayıt Sayfası";
+    Layout = "~/Views/Shared/_Layout_2.cshtml";
+}
+
+<link href="~/Content/login-register.css" rel="stylesheet" />
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+
+
+@using (Html.BeginForm())
+{
+    <div class="container">
+        <div class="login-container">
+            <div id="output"></div>
+            <h4 class="text-center"> <span class="glyphicon glyphicon-user" aria-hidden="true"></span> Kayıt Formu </h4>
+            <hr />
+            
+              @Html.ValidationSummary(false)
+        <br />
+            
+           
+            @*<div class="avatar">
+
+                </div>*@
+        <div class="form-box">
+            @Html.TextBoxFor(x => x.Username, new { name = "user", placeholder = "Kullanıcı adı", type = "text" })
+            @Html.TextBoxFor(x => x.Email, new { placeholder = "e-posta adresi", type = "text" })
+            @Html.TextBoxFor(x => x.Password, new { placeholder = "şifre", type = "password" })
+            @Html.TextBoxFor(x => x.RePassword, new { placeholder = "şifre tekrar", type = "password" })
+
+
+            <button class="btn btn-info btn-block login" type="submit">Kayıt Ol</button>
+
+        </div>
+        </div>
+
+    </div>
+}
+

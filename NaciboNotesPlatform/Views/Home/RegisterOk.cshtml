@@ -1,0 +1,51 @@
+﻿
+@{
+    ViewBag.Title = "RegisterOk";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/login-register.css" rel="stylesheet" />
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+@using (Html.BeginForm())
+{
+    <div class="container">
+        <div class="login-container">
+            <div id="output"></div>
+            <h4 class="text-center">  Yönlendiriliyorsunuz... </h4>
+            <hr />
+            
+            <div class="form-box">
+                <div class="text-success">
+                    <h4> <span class="glyphicon glyphicon-ok"></span>&nbsp;&nbsp;&nbsp;Kayıt oldunuz.. </h4>
+                </div>
+                <p class="text-justify">
+                    Lütfen e-posta adresinize gönderilen aktivasyon link'ine tıklayarak hesabınızı aktive ediniz.
+                    Hesabınızı aktive etmeden not ekleyemez ve beğenme yapamazsınız.
+                </p>
+
+            </div>
+        </div>
+
+    </div>
+
+    
+
+}
+<script>
+    $(function () {
+
+        setTimeout(function () {
+            window.location = "/Home/Index";
+
+
+        }, 10000);
+
+
+
+
+    });
+</script>
+
