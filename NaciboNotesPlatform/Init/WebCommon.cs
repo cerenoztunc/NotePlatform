@@ -16,7 +16,7 @@ namespace NaciboNotesPlatform.Init
                 NaciboUser user = HttpContext.Current.Session["login"] as NaciboUser;
                 return user.UserName;
             }
-            return null;
+            return "system";
         }
     }
 }

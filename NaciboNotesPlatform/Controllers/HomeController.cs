@@ -120,9 +120,31 @@ namespace NaciboNotesPlatform.Controllers
             return View();
         }
 
-        public ActionResult UserActivate(Guid activate_id)
+        public ActionResult UserActivate(Guid id)
+        {
+            NaciboUserManager num = new NaciboUserManager();
+            BussinessLayerResult<NaciboUser> res = num.ActivateUser(id);
+
+            if (res.Errors.Count > 0)
+            {
+                TempData["errors"] = res.Errors;
+                return RedirectToAction("UserActivateCancel");
+            }
+            return RedirectToAction("UserActivateOk");
+        }
+        public ActionResult UserActivateOk()
         {
             return View();
+        }
+        public ActionResult UserActivateCancel()
+        {
+            List<ErrorMessageObj> errors = null;
+
+            if (TempData["errors"] != null)
+            {
+                errors = TempData["errors"] as List<ErrorMessageObj>;
+            }
+            return View(errors);
         }
         public ActionResult Logout()
         {
