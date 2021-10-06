@@ -8,6 +8,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using Project.COMMON;
 
 namespace Project.BLL.DesignPatterns.GenericRepository.BaseRep
 {
@@ -25,6 +26,12 @@ namespace Project.BLL.DesignPatterns.GenericRepository.BaseRep
         public void Add(T item)
         {
             _db.Set<T>().Add(item);
+            if(item is BaseEntity)
+            {
+                BaseEntity be = item as BaseEntity;
+                
+                be.ModifiedUserName = App.Common.GetCurrentUsername();
+            }
             Save();
         }
 
@@ -117,6 +124,12 @@ namespace Project.BLL.DesignPatterns.GenericRepository.BaseRep
             item.ModifiedDate = DateTime.Now;
             T toBeUpdated = Find(item.ID);
             _db.Entry(toBeUpdated).CurrentValues.SetValues(item);
+            if (item is BaseEntity)
+            {
+                BaseEntity be = item as BaseEntity;
+                
+                be.ModifiedUserName = App.Common.GetCurrentUsername();
+            }
             Save();
         }
 

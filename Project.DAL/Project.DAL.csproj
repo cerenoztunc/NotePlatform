@@ -59,6 +59,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Project.COMMON\Project.COMMON.csproj">
+      <Project>{699fce07-80ee-4298-bb51-54875cb8eacb}</Project>
+      <Name>Project.COMMON</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Project.ENTITIES\Project.ENTITIES.csproj">
       <Project>{a4dda058-c88d-46d9-b9d0-5425c14ff968}</Project>
       <Name>Project.ENTITIES</Name>

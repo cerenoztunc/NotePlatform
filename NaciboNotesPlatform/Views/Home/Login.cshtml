@@ -16,8 +16,18 @@
             <div id="output"></div>
             <h4 class="text-center"> <span class="glyphicon glyphicon-user" aria-hidden="true"></span> Giriş Formu </h4>
             <hr />
-           
+
             @Html.ValidationSummary(false)
+            <br />
+
+            @if (ViewBag.SetLink != null)
+            {
+                <a href="@ViewBag.SetLink" class="btn btn-primary">
+                    Activate
+                </a>
+                <hr />
+            }
+
 
             <div class="form-box">
                 @Html.TextBoxFor(x => x.Username, new { name = "user", placeholder = "Kullanıcı adı", type = "text" })

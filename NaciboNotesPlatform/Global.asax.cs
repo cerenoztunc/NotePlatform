@@ -1,4 +1,6 @@
-﻿using System;
+﻿using NaciboNotesPlatform.Init;
+using Project.COMMON;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -13,6 +15,8 @@ namespace NaciboNotesPlatform
         {
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+
+            App.Common = new WebCommon();
         }
     }
 }

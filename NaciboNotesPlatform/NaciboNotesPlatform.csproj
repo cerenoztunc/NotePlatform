@@ -174,6 +174,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Init\WebCommon.cs" />
     <Compile Include="obj\Debug\.NETFramework,Version=v4.5.2.AssemblyAttributes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -210,6 +211,10 @@
     <ProjectReference Include="..\Project.BLL\Project.BLL.csproj">
       <Project>{23ff313d-9e6d-4e7a-b4e0-796a2e9a8544}</Project>
       <Name>Project.BLL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Project.COMMON\Project.COMMON.csproj">
+      <Project>{699fce07-80ee-4298-bb51-54875cb8eacb}</Project>
+      <Name>Project.COMMON</Name>
     </ProjectReference>
     <ProjectReference Include="..\Project.ENTITIES\Project.ENTITIES.csproj">
       <Project>{a4dda058-c88d-46d9-b9d0-5425c14ff968}</Project>

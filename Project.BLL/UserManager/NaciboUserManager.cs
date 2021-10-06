@@ -1,4 +1,5 @@
 ﻿using Project.BLL.DesignPatterns.GenericRepository.ConcRep;
+using Project.ENTITIES.Messages;
 using Project.ENTITIES.Models;
 using Project.ENTITIES.ValueObjects;
 using System;
@@ -24,11 +25,11 @@ namespace Project.BLL.UserManager
             {
                 if(user.UserName == data.Username)
                 {
-                    layerResult.Errors.Add("Kullanıcı adı kayıtlı.");
+                    layerResult.AddError(ErrorMessages.UsernameAlreadyExists, "Kullanıcı adı kayıtlı.");
                 }
                 if(user.Email == data.Email)
                 {
-                    layerResult.Errors.Add("E-posta adresi kayıtlı.");
+                    layerResult.AddError(ErrorMessages.EmailAlreadyExists, "E-posta adresi kayıtlı.");
                 }
             }
             else
@@ -54,9 +55,26 @@ namespace Project.BLL.UserManager
             return layerResult;
         }
 
-        //public BussinessLayerResult<NaciboUser> LoginUser(LoginVM data)
-        //{
-
-        //}
+        public BussinessLayerResult<NaciboUser> LoginUser(LoginVM data)
+        {
+            
+            BussinessLayerResult<NaciboUser> layerResult = new BussinessLayerResult<NaciboUser>();
+            layerResult.Result = _nUserRep.Where(x => x.UserName == data.Username && x.Password == data.Password).FirstOrDefault();
+            
+            if (layerResult.Result != null)
+            {
+                if (!layerResult.Result.IsActive)
+                {
+                    layerResult.AddError(ErrorMessages.UserIsNotActive, "Kullanıcı aktifleştirilmemiş.");
+                    layerResult.AddError(ErrorMessages.CheckYourEmail, "Lütfen e-posta adresinizi kontrol ediniz.");
+                }
+                
+            }
+            else
+            {
+                layerResult.AddError(ErrorMessages.UsernameOrPassWrong, "Kullanıcı adı ya da şifre uyuşmuyor.");
+            }
+            return layerResult;
+        }
     }
 }

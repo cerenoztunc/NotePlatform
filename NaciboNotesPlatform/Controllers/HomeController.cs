@@ -3,6 +3,7 @@ using Project.BLL;
 using Project.BLL.DesignPatterns.GenericRepository.ConcRep;
 using Project.BLL.DesignPatterns.SingletonPattern;
 using Project.BLL.UserManager;
+using Project.ENTITIES.Messages;
 using Project.ENTITIES.Models;
 using Project.ENTITIES.ValueObjects;
 using System;
@@ -67,7 +68,28 @@ namespace NaciboNotesPlatform.Controllers
         [HttpPost]
         public ActionResult Login(LoginVM model)
         {
-            return View();
+            if (ModelState.IsValid)
+            {
+                NaciboUserManager num = new NaciboUserManager();
+                BussinessLayerResult<NaciboUser> res = num.LoginUser(model);
+
+                if (res.Errors.Count > 0)
+                {
+                    
+                    if(res.Errors.Where(x=>x.Code == ErrorMessages.UserIsNotActive).FirstOrDefault() != null)
+                    {
+                        ViewBag.SetLink = "http://Home/Activate/2345678";
+                    }
+                    res.Errors.ForEach(x => ModelState.AddModelError("", x.Message));
+                    return View(model);
+                }
+
+                Session["login"] = res.Result;
+
+                return RedirectToAction("Index");
+            }
+            
+            return View(model);
         }
         public ActionResult Register()
         {
@@ -83,7 +105,7 @@ namespace NaciboNotesPlatform.Controllers
 
                 if(res.Errors.Count > 0)
                 {
-                    res.Errors.ForEach(x => ModelState.AddModelError("", x));
+                    res.Errors.ForEach(x => ModelState.AddModelError("", x.Message));
                     return View(model);
                 }
 
@@ -104,7 +126,8 @@ namespace NaciboNotesPlatform.Controllers
         }
         public ActionResult Logout()
         {
-            return View();
+            Session.Clear();
+            return RedirectToAction("Index");
         }
     }
 }
