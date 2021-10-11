@@ -23,6 +23,7 @@ namespace Project.BLL.DesignPatterns.GenericRepository.BaseRep
         {
             _db.SaveChanges();
         }
+
         public void Add(T item)
         {
             _db.Set<T>().Add(item);
@@ -46,11 +47,12 @@ namespace Project.BLL.DesignPatterns.GenericRepository.BaseRep
             return _db.Set<T>().Any(exp);
         }
 
-        public void Delete(T item)
+        public int Delete(T item)
         {
             item.Status = ENTITIES.Enums.DataStatus.Deleted;
             item.DeletedDate = DateTime.Now;
-            Save();
+            var sc = _db.SaveChanges();
+            return sc;
         }
 
         public void DeleteRange(List<T> list)
@@ -118,7 +120,7 @@ namespace Project.BLL.DesignPatterns.GenericRepository.BaseRep
             return _db.Set<T>().Select(exp).ToList();
         }
 
-        public void Update(T item)
+        public int Update(T item)
         {
             item.Status = ENTITIES.Enums.DataStatus.Updated;
             item.ModifiedDate = DateTime.Now;
@@ -130,7 +132,7 @@ namespace Project.BLL.DesignPatterns.GenericRepository.BaseRep
                 
                 be.ModifiedUserName = App.Common.GetCurrentUsername();
             }
-            Save();
+            return _db.SaveChanges();
         }
 
         public void UpdateRange(List<T> list)

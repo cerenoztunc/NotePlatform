@@ -1,6 +1,8 @@
-﻿
+﻿@using NaciboNotesPlatform.ViewModels
+@model WarningViewModel
+
 @{
-    ViewBag.Title = "Hesap Aktifleştirildi";
+    ViewBag.Title = Model.Title;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -14,16 +16,18 @@
     <div class="container">
         <div class="login-container">
             <div id="output"></div>
-            <h4 class="text-center">  Yönlendiriliyorsunuz... </h4>
+            <h4 class="text-center"> @Model.Header </h4>
             <hr />
 
             <div class="form-box">
-                <div class="text-success">
-                    <h4> <span class="glyphicon glyphicon-ok"></span>&nbsp;&nbsp;&nbsp;Hesap Aktifleştirildi.. </h4>
+                <div class="text-warning">
+                    <h4> <span class="glyphicon glyphicon-warning"></span>&nbsp;&nbsp;&nbsp;@Model.Title </h4>
                 </div>
                 <p class="text-justify">
-                    Hesabınız aktifleştirildi.
-                    Artık not ekleyebilir ve beğenme yapabilirsiniz.
+                    @foreach (string item in Model.Items)
+                    {
+                        @item <br />
+                    }
                 </p>
 
             </div>
@@ -31,21 +35,19 @@
 
     </div>
 
-
-
 }
+@{
+    string js = string.Empty;
+    if (Model.IsRedirecting)
+    {
+        js = "setTimeout(function() { window.location = '" + Model.RedirectingUrl + "'; }, " + Model.RedirectingTimeout + ")";
+    }
+}
+
 <script>
     $(function () {
 
-        setTimeout(function () {
-            window.location = "/Home/Index";
-
-
-        }, 10000);
-
-
-
+        @Html.Raw(js);
 
     });
 </script>
-

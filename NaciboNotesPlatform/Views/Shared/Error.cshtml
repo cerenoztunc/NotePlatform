@@ -1,0 +1,55 @@
+﻿
+@using NaciboNotesPlatform.ViewModels
+@using Project.ENTITIES.Messages
+@model ErrrorViewModel
+
+@{
+    ViewBag.Title = Model.Title;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/login-register.css" rel="stylesheet" />
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+@using (Html.BeginForm())
+{
+    <div class="container">
+        <div class="login-container">
+            <div id="output"></div>
+            <h4 class="text-center"> @Model.Header </h4>
+            <hr />
+
+            <div class="form-box">
+                <div class="text-danger">
+                    <h4> <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;&nbsp;&nbsp;@Model.Title </h4>
+                </div>
+                <p class="text-justify">
+                    @foreach (ErrorMessageObj item in Model.Items)
+                    {
+                        @item.Message <br />
+                    }
+                </p>
+
+            </div>
+        </div>
+
+    </div>
+
+}
+@{
+    string js = string.Empty;
+    if (Model.IsRedirecting)
+    {
+        js = "setTimeout(function() { window.location = '" + Model.RedirectingUrl + "'; }, " + Model.RedirectingTimeout + ")";
+    }
+}
+
+<script>
+    $(function () {
+
+        @Html.Raw(js);
+
+    });
+</script>

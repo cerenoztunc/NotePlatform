@@ -39,6 +39,7 @@ namespace Project.BLL.UserManager
                 {
                     UserName = data.Username,
                     Email = data.Email,
+                    ProfileImageFileName = "profile.jpg",
                     Password = data.Password,
                     ActivateGuid = Guid.NewGuid(),
                     IsAdmin = false,
@@ -64,11 +65,27 @@ namespace Project.BLL.UserManager
             return layerResult;
         }
 
+        public BussinessLayerResult<NaciboUser> GetUserById(int id)
+        {
+            BussinessLayerResult<NaciboUser> res = new BussinessLayerResult<NaciboUser>();
+            res.Result = _nUserRep.Find(id);
+
+            if(res.Result == null)
+            {
+                res.AddError(ErrorMessages.UserNotFound, "Kullanıcı bulunamadı.");
+            }
+            return res;
+            
+        }
+
         public BussinessLayerResult<NaciboUser> LoginUser(LoginVM data)
         {
 
             BussinessLayerResult<NaciboUser> layerResult = new BussinessLayerResult<NaciboUser>();
-            layerResult.Result = _nUserRep.Where(x => x.UserName == data.Username && x.Password == data.Password).FirstOrDefault();
+            layerResult.Result = _nUserRep.Where(x => x.UserName == data.Username && x.Password == data.Password && 
+            (x.Status == ENTITIES.Enums.DataStatus.Inserted ||
+            x.Status == ENTITIES.Enums.DataStatus.Updated)).FirstOrDefault();
+
 
             if (layerResult.Result != null)
             {
@@ -76,6 +93,10 @@ namespace Project.BLL.UserManager
                 {
                     layerResult.AddError(ErrorMessages.UserIsNotActive, "Kullanıcı aktifleştirilmemiş.");
                     layerResult.AddError(ErrorMessages.CheckYourEmail, "Lütfen e-posta adresinizi kontrol ediniz.");
+                }
+                if (layerResult.Result.Status == ENTITIES.Enums.DataStatus.Deleted)
+                {
+                    layerResult.AddError(ErrorMessages.UserCouldNotFind, "Böyle bir kullanıcı bulunmamaktadır");
                 }
 
             }
@@ -85,6 +106,64 @@ namespace Project.BLL.UserManager
             }
             return layerResult;
         }
+
+        public BussinessLayerResult<NaciboUser> UpdateProfile(NaciboUser data)
+        {
+            NaciboUser naciboUser = _nUserRep.FirstOrDefault(x => x.UserName == data.UserName || x.Email == data.Email);
+            BussinessLayerResult<NaciboUser> res = new BussinessLayerResult<NaciboUser>();
+            if(naciboUser != null && naciboUser.ID != data.ID)
+            {
+                if(naciboUser.UserName == data.UserName)
+                {
+                    res.AddError(ErrorMessages.UsernameAlreadyExists, "Kullanıcı adı kayıtlı");
+                }
+                if(naciboUser.Email == data.Email)
+                {
+                    res.AddError(ErrorMessages.EmailAlreadyExists, "E-posta adresi kayıtlı");
+                }
+                return res;
+            }
+            
+            res.Result = _nUserRep.Where(x =>x.ID == data.ID).FirstOrDefault();
+            res.Result.Email = data.Email;
+            res.Result.FirstName = data.FirstName;
+            res.Result.LastName = data.LastName;
+            res.Result.Password = data.Password;
+            res.Result.UserName = data.UserName;
+
+            if(string.IsNullOrEmpty(data.ProfileImageFileName) == false)
+            {
+                res.Result.ProfileImageFileName = data.ProfileImageFileName;
+            }
+            
+            if (_nUserRep.Update(res.Result) == 0)
+            {
+                res.AddError(ErrorMessages.ProfileCouldNotUpdated, "Profil güncellenemedi.");
+            }
+            return res;
+        }
+
+        public BussinessLayerResult<NaciboUser> DeleteUserByID(int id)
+        {
+            BussinessLayerResult<NaciboUser> res = new BussinessLayerResult<NaciboUser>();
+            NaciboUser user = _nUserRep.FirstOrDefault(x => x.ID == id);
+
+            if (user != null)
+            {
+                if(_nUserRep.DeleteUser(user) == 0)
+                {
+                    res.AddError(ErrorMessages.UserCouldNotRemove, "Kullanıcı silinemedi");
+                    return res;
+                }
+                
+            }
+            else
+            {
+                res.AddError(ErrorMessages.UserCouldNotFind, "Kullanıcı bulunamadı");
+            }
+            return res;
+        }
+
         public BussinessLayerResult<NaciboUser> ActivateUser(Guid activateID)
         {
             BussinessLayerResult<NaciboUser> layerResult = new BussinessLayerResult<NaciboUser>();

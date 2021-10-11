@@ -15,6 +15,15 @@ namespace Project.BLL.DesignPatterns.GenericRepository.ConcRep
             
             
         }
+
+        public int DeleteUser(NaciboUser item)
+        {
+            item.IsActive = false;
+            item.Status = ENTITIES.Enums.DataStatus.Deleted;
+            item.DeletedDate = DateTime.Now;
+            var result = _db.SaveChanges();
+            return result;
+        }
         
     }
 }

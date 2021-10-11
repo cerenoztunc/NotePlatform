@@ -1,4 +1,5 @@
 ﻿
+using NaciboNotesPlatform.ViewModels;
 using Project.BLL;
 using Project.BLL.DesignPatterns.GenericRepository.ConcRep;
 using Project.BLL.DesignPatterns.SingletonPattern;
@@ -20,9 +21,6 @@ namespace NaciboNotesPlatform.Controllers
         NoteRep _noteRep;
         CategoryRep _categoryRep;
         NaciboUserRep _nUserRep;
-
-        
-
         public HomeController()
         {
             _noteRep = new NoteRep();
@@ -36,7 +34,7 @@ namespace NaciboNotesPlatform.Controllers
             //    return View(TempData["categoryNotes"] as List<Note>);
             //}
 
-            return View(_noteRep.GetAll().OrderByDescending(x=>x.CreatedDate).ToList());
+            return View(_noteRep.GetAll().OrderByDescending(x => x.CreatedDate).ToList());
         }
         public ActionResult ByCategory(int? id)
         {
@@ -54,13 +52,102 @@ namespace NaciboNotesPlatform.Controllers
         public ActionResult MostLiked()
         {
 
-            return View("Index", _noteRep.GetAll().OrderByDescending(x=>x.LikeCount).ToList());
+            return View("Index", _noteRep.GetAll().OrderByDescending(x => x.LikeCount).ToList());
         }
         public ActionResult About()
         {
             return View();
         }
+        public ActionResult ShowProfile()
+        {
+            NaciboUser currentUser = Session["login"] as NaciboUser;
+            NaciboUserManager num = new NaciboUserManager();
+            BussinessLayerResult<NaciboUser> res = num.GetUserById(currentUser.ID);
+            if (res.Errors.Count > 0)
+            {
+                ErrrorViewModel error = new ErrrorViewModel
+                {
+                    Title = "Hata Oluştu",
+                    Items = res.Errors
+                };
 
+                return View("Error", error);
+            }
+            return View(res.Result);
+        }
+        public ActionResult EditProfile()
+        {
+            NaciboUser currentUser = Session["login"] as NaciboUser;
+            NaciboUserManager num = new NaciboUserManager();
+            BussinessLayerResult<NaciboUser> res = num.GetUserById(currentUser.ID);
+            if (res.Errors.Count > 0)
+            {
+                ErrrorViewModel error = new ErrrorViewModel
+                {
+                    Title = "Hata Oluştu",
+                    Items = res.Errors
+                };
+
+                return View("Error", error);
+            }
+            return View(res.Result);
+
+        }
+        [HttpPost]
+        public ActionResult EditProfile(NaciboUser model, HttpPostedFileBase ProfileImage)
+        {
+           
+            if (ModelState.IsValid)
+            {
+                if (ProfileImage != null &&
+                (ProfileImage.ContentType == "image/jpeg" ||
+                ProfileImage.ContentType == "image/jpg" ||
+                ProfileImage.ContentType == "image/png"))
+                {
+                    string filename = $"user_{model.ID}.{ProfileImage.ContentType.Split('/')[1]}";
+                    ProfileImage.SaveAs(Server.MapPath($"~/Images/{filename}"));
+                    model.ProfileImageFileName = filename;
+                }
+
+                NaciboUserManager num = new NaciboUserManager();
+                BussinessLayerResult<NaciboUser> res = num.UpdateProfile(model);
+                if (res.Errors.Count > 0)
+                {
+                    ErrrorViewModel messages = new ErrrorViewModel
+                    {
+                        Items = res.Errors,
+                        Title = "Profil Güncellenemedi",
+                        RedirectingUrl = "/Home/EditProfile"
+                    };
+                    return View("Error", messages);
+                }
+
+                Session["login"] = res.Result;
+
+                return RedirectToAction("ShowProfile");
+            }
+            return View(model);
+        }
+        public ActionResult DeleteProfile()
+        {
+            NaciboUser currentUser = Session["login"] as NaciboUser;
+            NaciboUserManager num = new NaciboUserManager();
+            BussinessLayerResult<NaciboUser> res = num.DeleteUserByID(currentUser.ID);
+
+            if (res.Errors.Count > 0)
+            {
+                ErrrorViewModel messages = new ErrrorViewModel()
+                {
+                    Items = res.Errors,
+                    Title = "Profil silinemedi",
+                    RedirectingUrl = "/Home/ShowProfile"
+                };
+                return View("Error", messages);
+            }
+            Session.Clear();
+
+            return RedirectToAction("Login");
+        }
         public ActionResult Login()
         {
             return View();
@@ -75,11 +162,12 @@ namespace NaciboNotesPlatform.Controllers
 
                 if (res.Errors.Count > 0)
                 {
-                    
-                    if(res.Errors.Where(x=>x.Code == ErrorMessages.UserIsNotActive).FirstOrDefault() != null)
+
+                    if (res.Errors.Where(x => x.Code == ErrorMessages.UserIsNotActive).FirstOrDefault() != null)
                     {
                         ViewBag.SetLink = "http://Home/Activate/2345678";
                     }
+                    
                     res.Errors.ForEach(x => ModelState.AddModelError("", x.Message));
                     return View(model);
                 }
@@ -88,7 +176,7 @@ namespace NaciboNotesPlatform.Controllers
 
                 return RedirectToAction("Index");
             }
-            
+
             return View(model);
         }
         public ActionResult Register()
@@ -100,26 +188,28 @@ namespace NaciboNotesPlatform.Controllers
         {
             if (ModelState.IsValid)
             {
+
                 NaciboUserManager num = new NaciboUserManager();
                 BussinessLayerResult<NaciboUser> res = num.RegisterUser(model);
 
-                if(res.Errors.Count > 0)
+                if (res.Errors.Count > 0)
                 {
                     res.Errors.ForEach(x => ModelState.AddModelError("", x.Message));
                     return View(model);
                 }
+                OkViewModel ok = new OkViewModel
+                {
+                    Title = "Kayıt Başarılı",
+                    RedirectingUrl = "/Home/Login",
 
-                return RedirectToAction("RegisterOk");
+                };
+                ok.Items.Add(" Lütfen e-posta adresinize gönderilen aktivasyon link'ine tıklayarak hesabınızı aktive ediniz.Hesabınızı aktive etmeden not ekleyemez ve beğenme yapamazsınız.");
+
+                return View("Ok", ok);
 
             }
             return View(model);
         }
-
-        public ActionResult RegisterOk()
-        {
-            return View();
-        }
-
         public ActionResult UserActivate(Guid id)
         {
             NaciboUserManager num = new NaciboUserManager();
@@ -127,24 +217,21 @@ namespace NaciboNotesPlatform.Controllers
 
             if (res.Errors.Count > 0)
             {
-                TempData["errors"] = res.Errors;
-                return RedirectToAction("UserActivateCancel");
-            }
-            return RedirectToAction("UserActivateOk");
-        }
-        public ActionResult UserActivateOk()
-        {
-            return View();
-        }
-        public ActionResult UserActivateCancel()
-        {
-            List<ErrorMessageObj> errors = null;
+                ErrrorViewModel error = new ErrrorViewModel
+                {
+                    Title = "Geçersiz işlem",
+                    Items = res.Errors
+                };
 
-            if (TempData["errors"] != null)
-            {
-                errors = TempData["errors"] as List<ErrorMessageObj>;
+                return View("Error", error);
             }
-            return View(errors);
+            OkViewModel ok = new OkViewModel
+            {
+                Title = "Hesap Aktifleştirildi",
+                RedirectingUrl = "/Home/Login"
+            };
+            ok.Items.Add("Hesabınız aktifleştirildi. Artık not ekleyebilir ve beğenme yapabilirsiniz.");
+            return RedirectToAction("Ok", ok);
         }
         public ActionResult Logout()
         {

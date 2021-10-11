@@ -1,7 +1,8 @@
-﻿@using Project.ENTITIES.Messages
-@model List<ErrorMessageObj>
+﻿@using NaciboNotesPlatform.ViewModels
+@model InfoViewModel
+
 @{
-    ViewBag.Title = "Hesap Geçersiz";
+    ViewBag.Title = Model.Title;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -15,17 +16,17 @@
     <div class="container">
         <div class="login-container">
             <div id="output"></div>
-            <h4 class="text-center">  Yönlendiriliyorsunuz... </h4>
+            <h4 class="text-center"> @Model.Header </h4>
             <hr />
 
             <div class="form-box">
-                <div class="text-danger">
-                    <h4> <span class="glyphicon glyphicon-remove"></span>&nbsp;&nbsp;&nbsp;Geçersiz İşlem.. </h4>
+                <div class="text-info">
+                    <h4> <span class="glyphicon glyphicon-info-sign"></span>&nbsp;&nbsp;&nbsp;@Model.Title </h4>
                 </div>
                 <p class="text-justify">
-                    @foreach (ErrorMessageObj item in Model)
+                    @foreach (string item in Model.Items)
                     {
-                        @item.Message <br />
+                        @item <br />
                     }
                 </p>
 
@@ -35,17 +36,18 @@
     </div>
 
 }
+@{
+    string js = string.Empty;
+    if (Model.IsRedirecting)
+    {
+        js = "setTimeout(function() { window.location = '" + Model.RedirectingUrl + "'; }, " + Model.RedirectingTimeout + ")";
+    }
+}
 
 <script>
     $(function () {
 
-        setTimeout(function () {
-            window.location = "/Home/Index";
-
-
-        }, 10000);
-
+        @Html.Raw(js);
 
     });
 </script>
-
