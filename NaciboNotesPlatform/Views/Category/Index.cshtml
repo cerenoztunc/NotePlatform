@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Project.ENTITIES.Models.Category>
+﻿
+@model IEnumerable<Project.ENTITIES.Models.Category>
 
 @{
     ViewBag.Title = "Index";
@@ -69,23 +70,23 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.ModifiedUserName)
                     </td>*@
-                    <td>
-                        <a href="/Category/Edit/@item.ID" class="btn btn-warning btn-sm" title="Edit">
-                            <span class="glyphicon glyphicon-edit"></span> 
-                        </a>
-                        <a href="/Category/Details/@item.ID" class="btn btn-info btn-sm" title="Details">
-                            <span class="glyphicon glyphicon-search"></span> 
-                        </a>
-                        <a href="/Category/Delete/@item.ID" class="btn btn-danger btn-sm" title="Delete">
-                            <span class="glyphicon glyphicon-trash"></span> 
-                        </a>
-                       
-                    </td>
+                <td>
+                    @MyBootstrap.LinkButton("/Category/Edit/" + item.ID, "warning", "btn-sm", "Edit", "edit", string.Empty)
+                    @MyBootstrap.LinkButton("/Category/Details/" + item.ID, "info", "btn-sm", "Details", "search", string.Empty)
+                    @MyBootstrap.LinkButton("/Category/Delete/" + item.ID, "danger", "btn-sm", "Delete", "trash", string.Empty)
+
+                </td>
                 </tr>
             }
 
         </table>
     </div>
 </div>
+<script>
+    $(function () {
+        $("footer").hide();
+    });
+
+</script>
 
 

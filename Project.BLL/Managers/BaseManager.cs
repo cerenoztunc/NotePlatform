@@ -18,7 +18,7 @@ namespace Project.BLL.Managers
         {
             return repo.Save();
         }
-        public int Add(T item)
+        public virtual int Add(T item)
         {
             return repo.Add(item);
         }
@@ -64,12 +64,12 @@ namespace Project.BLL.Managers
             return repo.Find(id);
         }
 
-        public T FirstOrDefault(Expression<Func<T, bool>> exp)
+        public virtual T FirstOrDefault(Expression<Func<T, bool>> exp)
         {
             return repo.FirstOrDefault(exp);
         }
 
-        public List<T> GetActives()
+        public virtual List<T> GetActives()
         {
             return repo.GetActives();
         }
@@ -99,7 +99,7 @@ namespace Project.BLL.Managers
             return repo.GetPassives();
         }
 
-        public List<T> List(Expression<Func<T, bool>> exp)
+        public virtual List<T> List(Expression<Func<T, bool>> exp)
         {
             return repo.Where(exp).ToList();
         }
@@ -109,7 +109,7 @@ namespace Project.BLL.Managers
             return repo.Select(exp);
         }
 
-        public int Update(T item)
+        public virtual int Update(T item)
         {
             return repo.Update(item);
         }

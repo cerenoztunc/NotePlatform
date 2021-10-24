@@ -1,0 +1,80 @@
+﻿@model IEnumerable<Project.ENTITIES.Models.NaciboUser>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row">
+    <div class="col-md-10 col-md-offset-1">
+        <h2>Index</h2>
+        <p>
+            @MyBootstrap.LinkButton("/NaciboUser/Create", "default", "btn-sm", string.Empty, "plus", " Create New")
+        </p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-10 col-md-offset-1">
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.LastName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.UserName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Email)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Password)
+                </th>
+                
+                
+                
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FirstName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LastName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UserName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Password)
+                    </td>
+                    
+                    
+                    <td>
+                        @MyBootstrap.LinkButton("/NaciboUser/Edit/" + item.ID, "warning", "btn-sm", "Edit", "edit", string.Empty)
+                        @MyBootstrap.LinkButton("/NaciboUser/Details/" + item.ID, "info", "btn-sm", "Details", "search", string.Empty)
+                        @MyBootstrap.LinkButton("/NaciboUser/Delete/" + item.ID, "danger", "btn-sm", "Delete", "trash", string.Empty)
+                       
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+</div>
+<script>
+    $(function () {
+        $("footer").hide();
+    });
+
+</script>
+
+

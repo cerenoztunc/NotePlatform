@@ -35,10 +35,12 @@
 </head>
 <body>
     @{ NaciboUser naciboUser = null;
-                    if (Session["login"] != null)
-                    {
-                        naciboUser = Session["login"] as NaciboUser;
-                    } }
+           
+        if (Session["login"] != null)
+        {
+            naciboUser = Session["login"] as NaciboUser;
+        } 
+     }
 
     <!-- Responsive navbar-->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -52,46 +54,57 @@
                 <ul class="nav navbar-nav">
                     @if (naciboUser != null)
                     {
-        <li class="btn-group dropdown">
-            <a href="/Home/ShowNotes" class="dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="dropdownMenuLink">
-                <span class="glyphicon glyphicon-wrench"> </span> Yönetim
+                        <li class="btn-group dropdown">
+                            <a href="/Home/ShowNotes" class="dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="dropdownMenuLink">
+                                <span class="glyphicon glyphicon-wrench"> </span> Yönetim
 
-            </a>
-            <ul class="dropdown-menu">
-                <li>
-                    <a href="/Note/AddNew">
-                        <span class="glyphicon glyphicon-plus"></span> Not Ekle
-                    </a>
-                </li>
-                <li role="separator" class="divider"></li>
-                <li>
-                    <a href="/Home/ShowNotes">
-                        <span class="glyphicon glyphicon-th-list"></span> Notlarım
-                    </a>
-                </li>
-                <li>
-                    <a href="/Note/MyLikedNotes">
-                        <span class="glyphicon glyphicon-heart"></span> Beğendiklerim
-                    </a>
-                </li>
-                @if (naciboUser.IsAdmin)
-                {
-                    <li role="separator" class="divider"></li>
-                                        <li>
-                                            <a href="/Category/Create">
-                                                <span class="glyphicon glyphicon-plus"></span> Kategori Ekle
-                                            </a>
-                                        </li>
-                                                            <li>
-                                                                <a href="/Category/Index">
-                                                                    <span class="glyphicon glyphicon-th-list">
-                                                                    </span> Kategoriler
-                                                                </a>
-                                                            </li>
-                                                        }
+                            </a>
+                            <ul class="dropdown-menu">
+                            <li>
+                                <a href="/Note/AddNew">
+                                     <span class="glyphicon glyphicon-plus"></span> Not Ekle
+                                </a>
+                            </li>
+                            <li role="separator" class="divider"></li>
+                            <li>
+                                <a href="/Home/ShowNotes">
+                                    <span class="glyphicon glyphicon-th-list"></span> Notlarım
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/Note/MyLikedNotes">
+                                    <span class="glyphicon glyphicon-heart"></span> Beğendiklerim
+                                </a>
+                            </li>
+                        @if (naciboUser.IsAdmin)
+                        {
+                            <li role="separator" class="divider"></li>
+                            <li>
+                                <a href="/Category/Create">
+                                    <span class="glyphicon glyphicon-plus"></span> Kategori Ekle
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/Category/Index">
+                                    <span class="glyphicon glyphicon-th-list"></span> Kategoriler
+                                </a>
+                            </li>
+                            <li role="separator" class="divider"></li>
+                            <li>
+                                <a href="/NaciboUser/Create">
+                                    <span class="glyphicon glyphicon-plus"></span> Kullanıcı Ekle
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/NaciboUser/Index">
+                                    <span class="glyphicon glyphicon-th-list"></span> Kullanıcılar
+                                </a>
+                            </li>
+                        }
 
-            </ul>
-        </li>}
+                            </ul>
+                        </li>
+                     }
 
                     <li class="nav-item">
                         <a class="nav-link" href="/Home/MostLiked">

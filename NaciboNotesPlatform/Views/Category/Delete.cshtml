@@ -56,11 +56,9 @@
             @Html.AntiForgeryToken()
 
     <div class="form-actions no-color">
-        <button type="submit" class="btn btn-danger">
-            <span class="glyphicon glyphicon-remove"></span>
-            Delete
-        </button>
-        @Html.ActionLink("Back to List", "Index", "Category", null, new { @class = "btn btn-default" })
+        
+        @MyBootstrap.Button("danger", string.Empty, "submit", "remove", " Delete")
+        @MyBootstrap.LinkButton("/Category/Index", "default", string.Empty, string.Empty, "arrow-left", " Back to List")
     </div>
         }
     </div>

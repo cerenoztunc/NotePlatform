@@ -16,7 +16,7 @@ namespace Project.BLL.Managers
         public override int Delete(Category item)
         {
             //Kategori ile iliskili note'ların silinmesi
-            foreach (Note note in item.Notes.ToList())
+            foreach (Note note in item.Notes)
             {
                 //Note ile ilgili liked'ların silinmesi
                 foreach (Liked liked in note.Likeds.ToList())

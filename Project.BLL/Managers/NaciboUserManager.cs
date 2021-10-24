@@ -14,7 +14,6 @@ namespace Project.BLL.Managers
 {
     public class NaciboUserManager : BaseManager<NaciboUser>
     {
-       
         public BussinessLayerResult<NaciboUser> RegisterUser(RegisterVM data)
         {
             NaciboUser user = FirstOrDefault(x => x.UserName == data.Username || x.Email == data.Email);
@@ -44,7 +43,7 @@ namespace Project.BLL.Managers
 
                 };
 
-                Add(naciboUser);
+                base.Add(naciboUser);
 
                 if (naciboUser != null)
                 {
@@ -61,7 +60,6 @@ namespace Project.BLL.Managers
 
             return layerResult;
         }
-
         public BussinessLayerResult<NaciboUser> GetUserById(int id)
         {
             BussinessLayerResult<NaciboUser> res = new BussinessLayerResult<NaciboUser>();
@@ -74,7 +72,6 @@ namespace Project.BLL.Managers
             return res;
             
         }
-
         public BussinessLayerResult<NaciboUser> LoginUser(LoginVM data)
         {
 
@@ -103,7 +100,6 @@ namespace Project.BLL.Managers
             }
             return layerResult;
         }
-
         public BussinessLayerResult<NaciboUser> UpdateProfile(NaciboUser data)
         {
             NaciboUser naciboUser =FirstOrDefault(x => x.UserName == data.UserName || x.Email == data.Email);
@@ -133,13 +129,12 @@ namespace Project.BLL.Managers
                 res.Result.ProfileImageFileName = data.ProfileImageFileName;
             }
             
-            if (Update(res.Result) == 0)
+            if (base.Update(res.Result) == 0)
             {
                 res.AddError(ErrorMessages.ProfileCouldNotUpdated, "Profil güncellenemedi.");
             }
             return res;
         }
-
         public BussinessLayerResult<NaciboUser> DeleteUserByID(int id)
         {
             BussinessLayerResult<NaciboUser> res = new BussinessLayerResult<NaciboUser>();
@@ -160,7 +155,6 @@ namespace Project.BLL.Managers
             }
             return res;
         }
-
         public BussinessLayerResult<NaciboUser> ActivateUser(Guid activateID)
         {
             BussinessLayerResult<NaciboUser> layerResult = new BussinessLayerResult<NaciboUser>();
@@ -183,6 +177,72 @@ namespace Project.BLL.Managers
             }
 
             return layerResult;
+        }
+        public new BussinessLayerResult<NaciboUser> Add(NaciboUser data)
+        {
+            NaciboUser user = FirstOrDefault(x => x.UserName == data.UserName || x.Email == data.Email);
+            BussinessLayerResult<NaciboUser> layerResult = new BussinessLayerResult<NaciboUser>();
+
+            layerResult.Result = data;
+
+            if (user != null)
+            {
+                if (user.UserName == data.UserName)
+                {
+                    layerResult.AddError(ErrorMessages.UsernameAlreadyExists, "Kullanıcı adı kayıtlı.");
+                }
+                if (user.Email == data.Email)
+                {
+                    layerResult.AddError(ErrorMessages.EmailAlreadyExists, "E-posta adresi kayıtlı.");
+                }
+            }
+            else
+            {
+                layerResult.Result.ProfileImageFileName = "profile.jpg";
+                layerResult.Result.ActivateGuid = Guid.NewGuid();
+
+                if(base.Add(layerResult.Result) == 0)
+                {
+                    layerResult.AddError(ErrorMessages.UserCouldNotInserted, "Kullanıcı eklenemedi.");
+                }
+               
+            }
+
+            return layerResult;
+        }
+        public new BussinessLayerResult<NaciboUser> Update(NaciboUser data)
+        {
+            NaciboUser naciboUser = FirstOrDefault(x => x.UserName == data.UserName || x.Email == data.Email);
+            BussinessLayerResult<NaciboUser> res = new BussinessLayerResult<NaciboUser>();
+            res.Result = data;
+            if (naciboUser != null && naciboUser.ID != data.ID)
+            {
+                if (naciboUser.UserName == data.UserName)
+                {
+                    res.AddError(ErrorMessages.UsernameAlreadyExists, "Kullanıcı adı kayıtlı");
+                }
+                if (naciboUser.Email == data.Email)
+                {
+                    res.AddError(ErrorMessages.EmailAlreadyExists, "E-posta adresi kayıtlı");
+                }
+                return res;
+            }
+
+            res.Result = FirstOrDefault(x => x.ID == data.ID);
+            res.Result.Email = data.Email;
+            res.Result.FirstName = data.FirstName;
+            res.Result.LastName = data.LastName;
+            res.Result.Password = data.Password;
+            res.Result.UserName = data.UserName;
+            res.Result.IsActive = data.IsActive;
+            res.Result.IsAdmin = data.IsAdmin;
+
+
+            if (base.Update(res.Result) == 0)
+            {
+                res.AddError(ErrorMessages.UserCouldNotUpdated, "Kullanıcı güncellenemedi.");
+            }
+            return res;
         }
     }
 }
