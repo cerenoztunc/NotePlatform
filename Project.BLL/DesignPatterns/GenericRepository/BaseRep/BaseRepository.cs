@@ -12,19 +12,19 @@ using Project.COMMON;
 
 namespace Project.BLL.DesignPatterns.GenericRepository.BaseRep
 {
-    public class BaseRepository<T> : IRepository<T> where T : BaseEntity
+    public class BaseRepository<T> : IDataAccess<T> where T : BaseEntity
     {
         protected MyContext _db;
         public BaseRepository()
         {
             _db = DBTool.DBInstance;
         }
-        protected void Save()
+        public int Save()
         {
-            _db.SaveChanges();
+           return _db.SaveChanges();
         }
 
-        public void Add(T item)
+        public int Add(T item)
         {
             _db.Set<T>().Add(item);
             if(item is BaseEntity)
@@ -33,7 +33,7 @@ namespace Project.BLL.DesignPatterns.GenericRepository.BaseRep
                 
                 be.ModifiedUserName = App.Common.GetCurrentUsername();
             }
-            Save();
+            return _db.SaveChanges();
         }
 
         public void AddRange(List<T> list)
@@ -75,9 +75,9 @@ namespace Project.BLL.DesignPatterns.GenericRepository.BaseRep
             Save();
         }
 
-        public T Find(int id)
+        public T Find(int? id)
         {
-            return _db.Set<T>().Find(id);
+            return _db.Set<T>().Find(id.Value);
         }
 
         public T FirstOrDefault(Expression<Func<T, bool>> exp)
@@ -152,5 +152,7 @@ namespace Project.BLL.DesignPatterns.GenericRepository.BaseRep
         {
             return _db.Set<T>().Where(exp).ToList();
         }
+
+        
     }
 }

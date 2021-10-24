@@ -1,9 +1,9 @@
 ﻿@model NaciboUser
 @{
     ViewBag.Title = "Profiliniz";
-    Layout = "~/Views/Shared/_Layout_2.cshtml";
+    
 }
-<script src="~/Scripts/bootstrap.bundle.min.js"></script>
+
 
 <div class="container">
     <div class="row">
@@ -17,39 +17,23 @@
                 <img src="~/Images/@Model.ProfileImageFileName" class="img-circle" width="128" height="128" />
             </div>
         </div>
-        <div class="col-md-8">
+        <div class="col-md-10">
             <h3>@(Model.FirstName + " " + Model.LastName)</h3>
             <br />
-            <h6><b>Username:</b>@Model.UserName</h6>
-            <h6><b>Email:</b>@Model.Email</h6>
+            <h5><b>Kullanıcı Adı:</b>@Model.UserName</h5>
+            <h5><b>E-mail:</b>@Model.Email</h5>
             <br />
-            <h6><a href="#">More...</a></h6>
+            <h5><a href="@Url.Action("ShowNotes")">Notlar..</a></h5>
 
         </div>
-        <div class="col-md-2 text-right">
-            
-            <div class="btn-group dropdown">
-                <a class="btn btn-info dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-                    <span class="glyphicon glyphicon-cog">&nbsp;</span>Options
-                    
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                    <li>
-                        <a class="dropdown-item" href="@Url.Action("EditProfile")">
-                            <span class="glyphicon glyphicon-edit">&nbsp;</span>
-                            Modify
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" href="@Url.Action("DeleteProfile")" onclick="return confirm('Are you sure remove this account?');">
-                            <span class="glyphicon glyphicon-trash">&nbsp;</span>
-                            Delete
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
+       
     </div>
 
 </div>
 
+<script>
+    $(function () {
+        $("footer").hide();
+    });
+
+</script>

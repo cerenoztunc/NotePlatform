@@ -53,17 +53,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BussinessLayerResult.cs" />
+    <Compile Include="Managers\CommentManager.cs" />
+    <Compile Include="Managers\LikedManager.cs" />
+    <Compile Include="Managers\NoteManager.cs" />
+    <Compile Include="Results\BussinessLayerResult.cs" />
     <Compile Include="DesignPatterns\GenericRepository\BaseRep\BaseRepository.cs" />
     <Compile Include="DesignPatterns\GenericRepository\ConcRep\CategoryRep.cs" />
     <Compile Include="DesignPatterns\GenericRepository\ConcRep\CommentRep.cs" />
     <Compile Include="DesignPatterns\GenericRepository\ConcRep\LikedRep.cs" />
     <Compile Include="DesignPatterns\GenericRepository\ConcRep\NaciboUserRep.cs" />
     <Compile Include="DesignPatterns\GenericRepository\ConcRep\NoteRep.cs" />
-    <Compile Include="DesignPatterns\GenericRepository\IntRep\IRepository.cs" />
     <Compile Include="DesignPatterns\SingletonPattern\DBTool.cs" />
+    <Compile Include="Managers\BaseManager.cs" />
+    <Compile Include="Managers\CategoryManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UserManager\NaciboUserManager.cs" />
+    <Compile Include="Managers\NaciboUserManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -74,6 +78,10 @@
       <Project>{699fce07-80ee-4298-bb51-54875cb8eacb}</Project>
       <Name>Project.COMMON</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Project.CORE\Project.CORE.csproj">
+      <Project>{e48f8e77-bca4-49d3-a00a-1f01caeca656}</Project>
+      <Name>Project.CORE</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Project.DAL\Project.DAL.csproj">
       <Project>{a41ff918-b0c6-457f-9e36-5d1edf1e59d7}</Project>
       <Name>Project.DAL</Name>
@@ -82,6 +90,9 @@
       <Project>{a4dda058-c88d-46d9-b9d0-5425c14ff968}</Project>
       <Name>Project.ENTITIES</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="DesignPatterns\GenericRepository\IntRep\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

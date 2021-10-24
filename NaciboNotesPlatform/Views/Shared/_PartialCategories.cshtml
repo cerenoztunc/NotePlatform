@@ -1,7 +1,8 @@
-﻿ <!-- Categories widget-->
+﻿@using Project.BLL.Managers
 
-@{ CategoryRep _cRep = new CategoryRep();
-    List<Category> list = _cRep.GetAll(); 
+@{ 
+    CategoryManager _cMan = new CategoryManager();
+    List<Category> list = _cMan.GetActives(); 
  }
 
 <div class="card-header">Kategoriler</div>
@@ -10,7 +11,7 @@
         <div class="col-sm-6">
             <ul class="list-unstyled mb-0">
                 <li>
-                    <a href="/Home/Index">
+                    <a href="@Url.Action("Index","Home")" >
                         <span class="glyphicon glyphicon-arrow-right"> </span> Tümü
                     </a>
                 </li>

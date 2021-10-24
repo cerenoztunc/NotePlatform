@@ -34,13 +34,11 @@
 
 </head>
 <body>
-    @{ 
-        NaciboUser naciboUser = null;
-        if(Session["login"] != null)
-        {
-            naciboUser = Session["login"] as NaciboUser;
-        }
-    }
+    @{ NaciboUser naciboUser = null;
+                    if (Session["login"] != null)
+                    {
+                        naciboUser = Session["login"] as NaciboUser;
+                    } }
 
     <!-- Responsive navbar-->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -54,12 +52,46 @@
                 <ul class="nav navbar-nav">
                     @if (naciboUser != null)
                     {
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <span class="glyphicon glyphicon-wrench"> </span> Yönetim
-                            </a>
-                        </li>
-                    }
+        <li class="btn-group dropdown">
+            <a href="/Home/ShowNotes" class="dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="dropdownMenuLink">
+                <span class="glyphicon glyphicon-wrench"> </span> Yönetim
+
+            </a>
+            <ul class="dropdown-menu">
+                <li>
+                    <a href="/Note/AddNew">
+                        <span class="glyphicon glyphicon-plus"></span> Not Ekle
+                    </a>
+                </li>
+                <li role="separator" class="divider"></li>
+                <li>
+                    <a href="/Home/ShowNotes">
+                        <span class="glyphicon glyphicon-th-list"></span> Notlarım
+                    </a>
+                </li>
+                <li>
+                    <a href="/Note/MyLikedNotes">
+                        <span class="glyphicon glyphicon-heart"></span> Beğendiklerim
+                    </a>
+                </li>
+                @if (naciboUser.IsAdmin)
+                {
+                    <li role="separator" class="divider"></li>
+                                        <li>
+                                            <a href="/Category/Create">
+                                                <span class="glyphicon glyphicon-plus"></span> Kategori Ekle
+                                            </a>
+                                        </li>
+                                                            <li>
+                                                                <a href="/Category/Index">
+                                                                    <span class="glyphicon glyphicon-th-list">
+                                                                    </span> Kategoriler
+                                                                </a>
+                                                            </li>
+                                                        }
+
+            </ul>
+        </li>}
 
                     <li class="nav-item">
                         <a class="nav-link" href="/Home/MostLiked">
@@ -80,33 +112,56 @@
 
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    @if(naciboUser == null)
+                    @if (naciboUser == null)
                     {
                         <li class="nav-item">
-                             <a class="giris" href="/Home/Login">
+                            <a class="giris" href="/Home/Login">
                                 <span class="glyphicon glyphicon-log-in"></span> Giriş
-                             </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="giris" href="/Home/Register">
-                                <span class="glyphicon glyphicon-user"></span> Üye Ol
                             </a>
                         </li>
-                    }
-                    else
-                    {
-                        <li class="nav-item">
-                            <a class="giris" href="/Home/ShowProfile">
-                                <span class="glyphicon glyphicon-user"></span> @naciboUser.UserName
+                                        <li class="nav-item">
+                                            <a class="giris" href="/Home/Register">
+                                                <span class="glyphicon glyphicon-user"></span> Üye Ol
+                                            </a>
+                                        </li>
+                                    }
+                                    else
+                                    {
+
+                        <li class="btn-group dropdown">
+                            <a href="/Home/ShowProfile" class="dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="dropdownMenuLink">
+                                <span class="glyphicon glyphicon-user"> </span> @naciboUser.UserName
                             </a>
+
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="/Home/ShowProfile">
+                                        <span class="glyphicon glyphicon-user"></span> Profil
+                                    </a>
+                                </li>
+                                <li role="separator" class="divider"></li>
+                                <li>
+                                    <a href="/Home/EditProfile">
+                                        <span class="glyphicon glyphicon-edit"></span> Düzenle
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/Home/DeleteProfile" onclick="return confirm('Hesabınızı silmek istediğinize emin misiniz?');">
+                                        <span class="glyphicon glyphicon-trash"></span> Sil
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
-                        <li class="nav-item">
-                            <a class="giris" href="/Home/Logout">
-                                <span class="glyphicon glyphicon-log-out"></span> Çıkış
-                            </a>
-                        </li>
-                    }
-                    
+
+
+                                        <li class="nav-item">
+
+                                            <a class="giris" href="/Home/Logout">
+                                                <span class="glyphicon glyphicon-log-out"></span> Çıkış
+                                            </a>
+                                        </li>
+                                    }
+
 
 
                 </ul>
@@ -119,7 +174,6 @@
 
 
     <!-- Footer-->
-
 
     <footer class="py-5 bg-dark">
         <div class="row">
@@ -186,6 +240,9 @@
         </div>
 
     </footer>
+
+
+
 
 </body>
 </html>

@@ -3,7 +3,8 @@ using NaciboNotesPlatform.ViewModels;
 using Project.BLL;
 using Project.BLL.DesignPatterns.GenericRepository.ConcRep;
 using Project.BLL.DesignPatterns.SingletonPattern;
-using Project.BLL.UserManager;
+using Project.BLL.Managers;
+using Project.BLL.Results;
 using Project.ENTITIES.Messages;
 using Project.ENTITIES.Models;
 using Project.ENTITIES.ValueObjects;
@@ -21,11 +22,13 @@ namespace NaciboNotesPlatform.Controllers
         NoteRep _noteRep;
         CategoryRep _categoryRep;
         NaciboUserRep _nUserRep;
+        NaciboUserManager num;
         public HomeController()
         {
             _noteRep = new NoteRep();
             _categoryRep = new CategoryRep();
             _nUserRep = new NaciboUserRep();
+            num = new NaciboUserManager();
         }
         public ActionResult Index()
         {
@@ -34,7 +37,7 @@ namespace NaciboNotesPlatform.Controllers
             //    return View(TempData["categoryNotes"] as List<Note>);
             //}
 
-            return View(_noteRep.GetAll().OrderByDescending(x => x.CreatedDate).ToList());
+            return View(_noteRep.GetActives().OrderByDescending(x => x.CreatedDate).ToList());
         }
         public ActionResult ByCategory(int? id)
         {
@@ -45,14 +48,14 @@ namespace NaciboNotesPlatform.Controllers
             {
                 return HttpNotFound();
             }
-
+            
 
             return View("Index", c.Notes.OrderByDescending(x => x.CreatedDate).ToList());
         }
         public ActionResult MostLiked()
         {
 
-            return View("Index", _noteRep.GetAll().OrderByDescending(x => x.LikeCount).ToList());
+            return View("Index", _noteRep.GetActives().OrderByDescending(x => x.LikeCount).ToList());
         }
         public ActionResult About()
         {
@@ -61,7 +64,7 @@ namespace NaciboNotesPlatform.Controllers
         public ActionResult ShowProfile()
         {
             NaciboUser currentUser = Session["login"] as NaciboUser;
-            NaciboUserManager num = new NaciboUserManager();
+             
             BussinessLayerResult<NaciboUser> res = num.GetUserById(currentUser.ID);
             if (res.Errors.Count > 0)
             {
@@ -75,10 +78,25 @@ namespace NaciboNotesPlatform.Controllers
             }
             return View(res.Result);
         }
+
+        public ActionResult ShowNotes(NaciboUser naciboUser)
+        {
+            NaciboUser currentUser = Session["login"] as NaciboUser;
+            if(naciboUser.Notes != null)
+            {
+                currentUser.Notes = _noteRep.Where(x => x.NaciboUser.Notes == naciboUser.Notes);
+            }
+            else if(naciboUser == null)
+            {
+                ViewBag.NoNote = "Not bulunmamaktadır.";
+            }
+            
+            return View(currentUser);
+        }
         public ActionResult EditProfile()
         {
             NaciboUser currentUser = Session["login"] as NaciboUser;
-            NaciboUserManager num = new NaciboUserManager();
+            
             BussinessLayerResult<NaciboUser> res = num.GetUserById(currentUser.ID);
             if (res.Errors.Count > 0)
             {
@@ -96,7 +114,7 @@ namespace NaciboNotesPlatform.Controllers
         [HttpPost]
         public ActionResult EditProfile(NaciboUser model, HttpPostedFileBase ProfileImage)
         {
-           
+
             if (ModelState.IsValid)
             {
                 if (ProfileImage != null &&
@@ -109,7 +127,7 @@ namespace NaciboNotesPlatform.Controllers
                     model.ProfileImageFileName = filename;
                 }
 
-                NaciboUserManager num = new NaciboUserManager();
+                
                 BussinessLayerResult<NaciboUser> res = num.UpdateProfile(model);
                 if (res.Errors.Count > 0)
                 {
@@ -131,7 +149,7 @@ namespace NaciboNotesPlatform.Controllers
         public ActionResult DeleteProfile()
         {
             NaciboUser currentUser = Session["login"] as NaciboUser;
-            NaciboUserManager num = new NaciboUserManager();
+           
             BussinessLayerResult<NaciboUser> res = num.DeleteUserByID(currentUser.ID);
 
             if (res.Errors.Count > 0)
@@ -157,7 +175,7 @@ namespace NaciboNotesPlatform.Controllers
         {
             if (ModelState.IsValid)
             {
-                NaciboUserManager num = new NaciboUserManager();
+                
                 BussinessLayerResult<NaciboUser> res = num.LoginUser(model);
 
                 if (res.Errors.Count > 0)
@@ -167,7 +185,7 @@ namespace NaciboNotesPlatform.Controllers
                     {
                         ViewBag.SetLink = "http://Home/Activate/2345678";
                     }
-                    
+
                     res.Errors.ForEach(x => ModelState.AddModelError("", x.Message));
                     return View(model);
                 }
@@ -188,8 +206,6 @@ namespace NaciboNotesPlatform.Controllers
         {
             if (ModelState.IsValid)
             {
-
-                NaciboUserManager num = new NaciboUserManager();
                 BussinessLayerResult<NaciboUser> res = num.RegisterUser(model);
 
                 if (res.Errors.Count > 0)
@@ -212,7 +228,7 @@ namespace NaciboNotesPlatform.Controllers
         }
         public ActionResult UserActivate(Guid id)
         {
-            NaciboUserManager num = new NaciboUserManager();
+            
             BussinessLayerResult<NaciboUser> res = num.ActivateUser(id);
 
             if (res.Errors.Count > 0)

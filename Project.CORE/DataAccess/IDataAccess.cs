@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Project.BLL.DesignPatterns.GenericRepository.IntRep
 {
-    public interface IRepository<T> where T:BaseEntity
+    public interface IDataAccess<T> where T:BaseEntity
     {
         //List Commands
         List<T> GetAll();
@@ -17,7 +17,7 @@ namespace Project.BLL.DesignPatterns.GenericRepository.IntRep
         List<T> GetModifies();
 
         //Modify Commands
-        void Add(T item);
+        int Add(T item);
         void AddRange(List<T> list);
         int Delete(T item);
         void DeleteRange(List<T> list);
@@ -25,6 +25,7 @@ namespace Project.BLL.DesignPatterns.GenericRepository.IntRep
         void UpdateRange(List<T> list);
         void Destroy(T item);
         void DestroyRange(List<T> list);
+       
 
         //Linq Commands
         List<T> Where(Expression<Func<T, bool>> exp);
@@ -32,9 +33,10 @@ namespace Project.BLL.DesignPatterns.GenericRepository.IntRep
         T FirstOrDefault(Expression<Func<T, bool>> exp);
         object Select(Expression<Func<T, object>> exp);
         List<T> List(Expression<Func<T, bool>> exp);
+        
 
         //FindCommands
-        T Find(int id);
+        T Find(int? id);
         T GetLastData();
         T GetFirstData();
     }

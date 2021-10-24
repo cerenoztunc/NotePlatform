@@ -1,0 +1,35 @@
+﻿@model NaciboUser
+@{
+    ViewBag.Title = "ShowNotes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th> <h3> <b>@Model.UserName Notları</b> </h3></th>
+            </tr>
+        </thead>
+        <tbody>
+            @ViewBag.NoNote
+            @foreach (Note item in Model.Notes)
+            {
+                <tr>
+
+                    <th> <p style="color:red;">@item.Title</p> @item.Text</th>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+
+</div>
+<script>
+    $(function () {
+        $("footer").hide();
+    });
+
+</script>
+

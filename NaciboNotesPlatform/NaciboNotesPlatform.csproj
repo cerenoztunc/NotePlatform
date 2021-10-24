@@ -197,7 +197,6 @@
     <Content Include="Views\Shared\_PartialCategories.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
-    <Content Include="Views\Shared\_Layout_2.cshtml" />
     <Content Include="Views\Home\Register.cshtml" />
     <Content Include="Views\Home\ShowProfile.cshtml" />
     <Content Include="Views\Home\EditProfile.cshtml" />
@@ -205,6 +204,12 @@
     <Content Include="Views\Shared\Warning.cshtml" />
     <Content Include="Views\Shared\Info.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Home\ShowNotes.cshtml" />
+    <Content Include="Views\Category\Create.cshtml" />
+    <Content Include="Views\Category\Delete.cshtml" />
+    <Content Include="Views\Category\Details.cshtml" />
+    <Content Include="Views\Category\Edit.cshtml" />
+    <Content Include="Views\Category\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -214,9 +219,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Data\" />
     <Folder Include="Models\" />
     <Folder Include="obj\Debug\TempPE\" />
-    <Folder Include="Views\Category\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Project.BLL\Project.BLL.csproj">
@@ -226,6 +231,10 @@
     <ProjectReference Include="..\Project.COMMON\Project.COMMON.csproj">
       <Project>{699fce07-80ee-4298-bb51-54875cb8eacb}</Project>
       <Name>Project.COMMON</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Project.CORE\Project.CORE.csproj">
+      <Project>{e48f8e77-bca4-49d3-a00a-1f01caeca656}</Project>
+      <Name>Project.CORE</Name>
     </ProjectReference>
     <ProjectReference Include="..\Project.ENTITIES\Project.ENTITIES.csproj">
       <Project>{a4dda058-c88d-46d9-b9d0-5425c14ff968}</Project>

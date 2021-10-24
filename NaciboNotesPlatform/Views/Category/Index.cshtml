@@ -1,0 +1,91 @@
+﻿@model IEnumerable<Project.ENTITIES.Models.Category>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-10 col-md-offset-1">
+        <h2>Kategoriler</h2>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-10 col-md-offset-1">
+        <p>
+            <a href="/Category/Create" class="btn btn-primary">
+                <span class="glyphicon glyphicon-plus"></span> Create
+            </a>
+           
+        </p>
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Title)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Description)
+                </th>
+                @*<th>
+                    @Html.DisplayNameFor(model => model.CreatedDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ModifiedDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DeletedDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Status)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ModifiedUserName)
+                </th>
+                <th></th>*@
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    @*<td>
+                        @Html.DisplayFor(modelItem => item.CreatedDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ModifiedDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DeletedDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ModifiedUserName)
+                    </td>*@
+                    <td>
+                        <a href="/Category/Edit/@item.ID" class="btn btn-warning btn-sm" title="Edit">
+                            <span class="glyphicon glyphicon-edit"></span> 
+                        </a>
+                        <a href="/Category/Details/@item.ID" class="btn btn-info btn-sm" title="Details">
+                            <span class="glyphicon glyphicon-search"></span> 
+                        </a>
+                        <a href="/Category/Delete/@item.ID" class="btn btn-danger btn-sm" title="Delete">
+                            <span class="glyphicon glyphicon-trash"></span> 
+                        </a>
+                       
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+</div>
+
+

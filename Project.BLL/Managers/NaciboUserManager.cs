@@ -1,4 +1,5 @@
 ﻿using Project.BLL.DesignPatterns.GenericRepository.ConcRep;
+using Project.BLL.Results;
 using Project.COMMON.Helpers;
 using Project.ENTITIES.Messages;
 using Project.ENTITIES.Models;
@@ -9,18 +10,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Project.BLL.UserManager
+namespace Project.BLL.Managers
 {
-    public class NaciboUserManager
+    public class NaciboUserManager : BaseManager<NaciboUser>
     {
-        NaciboUserRep _nUserRep;
-        public NaciboUserManager()
-        {
-            _nUserRep = new NaciboUserRep();
-        }
+       
         public BussinessLayerResult<NaciboUser> RegisterUser(RegisterVM data)
         {
-            NaciboUser user = _nUserRep.Where(x => x.UserName == data.Username || x.Email == data.Email).FirstOrDefault();
+            NaciboUser user = FirstOrDefault(x => x.UserName == data.Username || x.Email == data.Email);
             BussinessLayerResult<NaciboUser> layerResult = new BussinessLayerResult<NaciboUser>();
             if (user != null)
             {
@@ -47,11 +44,11 @@ namespace Project.BLL.UserManager
 
                 };
 
-                _nUserRep.Add(naciboUser);
+                Add(naciboUser);
 
                 if (naciboUser != null)
                 {
-                    layerResult.Result = _nUserRep.Where(x => x.Email == data.Email && x.UserName == data.Username).FirstOrDefault();
+                    layerResult.Result = FirstOrDefault(x => x.Email == data.Email && x.UserName == data.Username);
                     //layerResult.Result.ActivateGuid
                     string siteUri = ConfigHelper.Get<string>("SiteRootUri");
 
@@ -68,7 +65,7 @@ namespace Project.BLL.UserManager
         public BussinessLayerResult<NaciboUser> GetUserById(int id)
         {
             BussinessLayerResult<NaciboUser> res = new BussinessLayerResult<NaciboUser>();
-            res.Result = _nUserRep.Find(id);
+            res.Result = Find(id);
 
             if(res.Result == null)
             {
@@ -82,9 +79,9 @@ namespace Project.BLL.UserManager
         {
 
             BussinessLayerResult<NaciboUser> layerResult = new BussinessLayerResult<NaciboUser>();
-            layerResult.Result = _nUserRep.Where(x => x.UserName == data.Username && x.Password == data.Password && 
+            layerResult.Result = FirstOrDefault(x => x.UserName == data.Username && x.Password == data.Password && 
             (x.Status == ENTITIES.Enums.DataStatus.Inserted ||
-            x.Status == ENTITIES.Enums.DataStatus.Updated)).FirstOrDefault();
+            x.Status == ENTITIES.Enums.DataStatus.Updated));
 
 
             if (layerResult.Result != null)
@@ -109,7 +106,7 @@ namespace Project.BLL.UserManager
 
         public BussinessLayerResult<NaciboUser> UpdateProfile(NaciboUser data)
         {
-            NaciboUser naciboUser = _nUserRep.FirstOrDefault(x => x.UserName == data.UserName || x.Email == data.Email);
+            NaciboUser naciboUser =FirstOrDefault(x => x.UserName == data.UserName || x.Email == data.Email);
             BussinessLayerResult<NaciboUser> res = new BussinessLayerResult<NaciboUser>();
             if(naciboUser != null && naciboUser.ID != data.ID)
             {
@@ -124,7 +121,7 @@ namespace Project.BLL.UserManager
                 return res;
             }
             
-            res.Result = _nUserRep.Where(x =>x.ID == data.ID).FirstOrDefault();
+            res.Result = FirstOrDefault(x =>x.ID == data.ID);
             res.Result.Email = data.Email;
             res.Result.FirstName = data.FirstName;
             res.Result.LastName = data.LastName;
@@ -136,7 +133,7 @@ namespace Project.BLL.UserManager
                 res.Result.ProfileImageFileName = data.ProfileImageFileName;
             }
             
-            if (_nUserRep.Update(res.Result) == 0)
+            if (Update(res.Result) == 0)
             {
                 res.AddError(ErrorMessages.ProfileCouldNotUpdated, "Profil güncellenemedi.");
             }
@@ -146,11 +143,11 @@ namespace Project.BLL.UserManager
         public BussinessLayerResult<NaciboUser> DeleteUserByID(int id)
         {
             BussinessLayerResult<NaciboUser> res = new BussinessLayerResult<NaciboUser>();
-            NaciboUser user = _nUserRep.FirstOrDefault(x => x.ID == id);
+            NaciboUser user = FirstOrDefault(x => x.ID == id);
 
             if (user != null)
             {
-                if(_nUserRep.DeleteUser(user) == 0)
+                if(Delete(user) == 0)
                 {
                     res.AddError(ErrorMessages.UserCouldNotRemove, "Kullanıcı silinemedi");
                     return res;
@@ -167,7 +164,7 @@ namespace Project.BLL.UserManager
         public BussinessLayerResult<NaciboUser> ActivateUser(Guid activateID)
         {
             BussinessLayerResult<NaciboUser> layerResult = new BussinessLayerResult<NaciboUser>();
-            layerResult.Result = _nUserRep.Where(x => x.ActivateGuid == activateID).FirstOrDefault();
+            layerResult.Result = FirstOrDefault(x => x.ActivateGuid == activateID);
 
             if(layerResult.Result != null)
             {
@@ -178,7 +175,7 @@ namespace Project.BLL.UserManager
                 }
 
                 layerResult.Result.IsActive = true;
-                _nUserRep.Update(layerResult.Result);
+                Update(layerResult.Result);
             }
             else
             {
