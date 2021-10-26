@@ -152,7 +152,10 @@ namespace Project.BLL.DesignPatterns.GenericRepository.BaseRep
         {
             return _db.Set<T>().Where(exp).ToList();
         }
-
         
+        public IQueryable<T> ListQuaryable()
+        {
+            return _db.Set<T>().AsQueryable();
+        }
     }
 }

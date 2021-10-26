@@ -33,7 +33,7 @@ namespace Project.BLL.DesignPatterns.GenericRepository.IntRep
         T FirstOrDefault(Expression<Func<T, bool>> exp);
         object Select(Expression<Func<T, object>> exp);
         List<T> List(Expression<Func<T, bool>> exp);
-        
+        IQueryable<T> ListQuaryable();
 
         //FindCommands
         T Find(int? id);

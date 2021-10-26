@@ -124,6 +124,10 @@ namespace Project.BLL.Managers
         {
             return repo.Where(exp);
         }
-       
+
+        public IQueryable<T> ListQuaryable()
+        {
+            return repo.ListQuaryable();
+        }
     }
 }
