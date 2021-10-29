@@ -75,16 +75,36 @@
                 </div>
             </div>
             <!-- Notlar-->
-            <div class="row">
+            <div class="row row-cols-1 row-cols-md-2">
                 @foreach (Note item in Model.Notes)
                 {
                     <div class="col-lg-4" data-note-id="@item.ID">
                         <!-- Blog post-->
                         <div class="card mb-4">
                             <a href="#!">
-                                <img class="card-img-top" src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="@item.Title" />
+                                <img class="card-img-top" src="https://picsum.photos/700/350?grayscale&random=@(Model.Notes.IndexOf(item) % 10)" alt="@item.Title" />
                             </a>
                             <div class="card-body">
+                                <h3 class="card-title"> 
+                                        <a href="#" data-toggle="modal" data-target="#modal_notedetail" data-note-id="@item.ID">
+                                            @item.Title
+                                        </a>
+                                </h3>
+
+                                <p class="card-text">
+                                    @if (string.IsNullOrEmpty(item.Text) == false && item.Text.Length > 70)
+                                    {
+                                        @(item.Text.Substring(0,70) +"...")
+
+                                    }
+                                    else
+                                    {
+                                        @item.Text
+                                        
+                                    }
+
+                                </p>
+                                
                                 <div class="small text-muted pull-right">
                                     <span class="glyphicon glyphicon-user"></span>
                                     @if (item.NaciboUser.UserName == null)
@@ -96,9 +116,7 @@
                                     {
                                         @item.NaciboUser.UserName
                                     }
-
-                                </div><br />
-                                <div class="small text-muted pull-right">
+                                <br />
                                     <span class="glyphicon glyphicon-time"></span>
                                     @if (item.ModifiedDate != null)
                                     {
@@ -109,58 +127,25 @@
                                         @item.CreatedDate
                                     }
                                 </div>
-                                <div>
-                                    <h3 class="card-title">
-                                        @if (item.Title.Length > 8)
-                                        {
-                                            <a href="#" data-toggle="modal" data-target="#modal_notedetail" data-note-id="@item.ID">
-                                                @(item.Title.Substring(0,10) +"...")
-                                            </a>
+                                
+                            </div>
+                            <div class="card-footer">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="ratings">
+                                            <button class="btn btn-light" style="color: #e15959;" data-liked="false" data-note-id="@item.ID">
+                                                <span class="glyphicon glyphicon-heart-empty like-heart"></span>&nbsp;                  <span class="like-count">@item.LikeCount</span>
+                                            </button>
+                                            <button class="btn btn-light" data-toggle="modal" data-target="#modal_comment" data-note-id="@item.ID" style="color:#e15959;">
+                                                <span class="glyphicon glyphicon-comment"></span> @item.Comments.Count
+                                            </button>
 
-                                        }
-                                        else
-                                        {
-                                            <a href="#" data-toggle="modal" data-target="#modal_notedetail" data-note-id="@item.ID">
-                                                @item.Title
-                                            </a>
-                                        }
-
-                                    </h3>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 text-right">
+                                        <a class="btn btn-light" href="#!" data-toggle="modal" data-target="#modal_notedetail" data-note-id="@item.ID">Detay <span class="glyphicon glyphicon-chevron-right"></span></a>
+                                    </div>
                                 </div>
-
-
-                                <p class="card-text">
-                                    @if (item.Text != null && item.Text.Length < 60)
-                                    {
-                                        @item.Text
-                                        <br />
-                                        <a class="btn btn-primary btn-xs" href="#!" data-toggle="modal" data-target="#modal_notedetail" data-note-id="@item.ID">Tümü →</a>
-
-                                    }
-                                    else
-                                    {
-                                        @(item.Text.Substring(0,57) +"...")
-                                        <br />
-                                        <a class="btn btn-primary btn-xs" href="#!" data-toggle="modal" data-target="#modal_notedetail" data-note-id="@item.ID">Devamı →</a>
-
-                                    }
-
-                                    <hr />
-                                </p>
-                                <div class="ratings">
-                                    <p class="pull-right">
-                                        <button class="btn btn-default btn-sm" data-toggle="modal" data-target="#modal_comment" data-note-id="@item.ID" style="color:#e15959;">
-                                            <span class="glyphicon glyphicon-comment"></span> Yorumlar
-                                        </button>
-                                    </p>
-                                    <p>
-                                        <button class="btn btn-default btn-sm" type="button" style="color: #e15959;" data-liked="false" data-note-id="@item.ID">
-                                            <span class="glyphicon glyphicon-heart-empty like-heart"></span>&nbsp;                  <span class="like-count">@item.LikeCount</span>
-                                        </button>
-
-                                    </p>
-                                </div>
-
                             </div>
                         </div>
 
