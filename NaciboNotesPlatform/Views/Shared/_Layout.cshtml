@@ -10,11 +10,12 @@
     <!-- Favicon-->
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
     <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
     <link href="~/Content/styles.css" rel="stylesheet" />
     <!-- Bootstrap core JS-->
-    <script src="~/Scripts/jquery-3.1.0.min.js"></script>
+    <script src="~/Scripts/jquery-3.5.0.min.js"></script>
     <script src="~/Content/scripts.js"></script>
-    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/bootstrap.bundle.min.js"></script>
 
 
 
@@ -45,13 +46,13 @@
                 <ul class="nav navbar-nav">
                     @if (CurrentSession.User != null)
                     {
-                        <li class="btn-group dropdown">
-                            <a href="/Note/Index" class="dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="dropdownMenuLink">
+                        <li class="btn-group dropdown nav-item">
+                            <a href="/Note/Index" class="dropdown-toggle nav-link" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="dropdownMenuLink">
                                 <span class="glyphicon glyphicon-wrench"> </span> Yönetim
 
                             </a>
                             <ul class="dropdown-menu">
-                            <li>
+                            <li >
                                 <a href="/Note/Create">
                                      <span class="glyphicon glyphicon-plus"></span> Not Ekle
                                 </a>
@@ -124,7 +125,7 @@
                             </a>
                         </li>
                                         <li class="nav-item">
-                                            <a class="giris" href="/Home/Register">
+                                            <a class="giris nav-link" href="/Home/Register">
                                                 <span class="glyphicon glyphicon-user"></span> Üye Ol
                                             </a>
                                         </li>
@@ -160,7 +161,7 @@
 
                                         <li class="nav-item">
 
-                                            <a class="giris" href="/Home/Logout">
+                                            <a class="giris nav-link" href="/Home/Logout">
                                                 <span class="glyphicon glyphicon-log-out"></span> Çıkış
                                             </a>
                                         </li>
@@ -189,17 +190,17 @@
                 <p class="m-0 text-white">
                     <ul list-style-type: none;>
                         <li>
-                            <a href="/Home/About">
+                            <a href="/Home/About" class="nav-link">
                                 <span class="glyphicon glyphicon-info-sign"></span> Hakkımızda
                             </a>
                         </li>
                         <li>
-                            <a href="/Home/MostLiked">
+                            <a href="/Home/MostLiked" class="nav-link">
                                 <span class="glyphicon glyphicon-heart"> </span> En Beğenilenler
                             </a>
                         </li>
                         <li>
-                            <a href="/Home/Index">
+                            <a href="/Home/Index" class="nav-link">
                                 <span class="glyphicon glyphicon-th-list"></span> Son Notlar
                             </a>
                         </li>

@@ -41,8 +41,18 @@ namespace NaciboNotesPlatform.Controllers
             //{
             //    return View(TempData["categoryNotes"] as List<Note>);
             //}
+            var notes = _noteRep.GetActives().Where(x => x.IsDraft == false).OrderByDescending(x => x.CreatedDate).ToList();
+            int mostLikedCount = notes.Max(x => x.LikeCount);
+            var mostLikedNote = notes.FirstOrDefault(x => x.LikeCount == mostLikedCount);
 
-            return View(_noteRep.GetActives().Where(x=>x.IsDraft == false).OrderByDescending(x => x.CreatedDate).ToList());
+            NoteVM viewModel = new NoteVM()
+            {
+                MostLikedNote = mostLikedNote,
+                Notes = notes
+            };
+            
+
+            return View(viewModel);
         }
         public ActionResult ByCategory(int? id)
         {

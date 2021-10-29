@@ -1,4 +1,6 @@
-﻿@model List<Note>
+﻿@using NaciboNotesPlatform.ViewModels
+
+@model NoteVM
 @{
     ViewBag.Title = "Index";
 }
@@ -12,23 +14,69 @@
         </div>
     </header>*@
 <!-- Page content-->
-<div class="container">
+<div class="container-fluid">
     <div class="row">
+        <!-- Side widgets-->
+        <div class="col-lg-3">
+            <!-- Search widget-->
+            <div class="card mb-3">
+                <div class="card-header">Search</div>
+                <div class="card-body">
+                    <div class="input-group">
+                        <input class="form-control" type="text" placeholder="Enter search term..." aria-label="Enter search term..." aria-describedby="button-search" />
+                        <button class="btn btn-primary" id="button-search" type="button">Go!</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Categories widget-->
+            <div class="card mb-3">
+                @Html.Partial("_PartialCategories")
+            </div>
+            <!-- Side widget-->
+            @*<div class="card mb-3">
+                <div class="card-header">Side Widget</div>
+                <div class="card-body">You can put anything you want inside of these side widgets. They are easy to use, and feature the Bootstrap 5 card component!</div>
+            </div>*@
+        </div>
         <!-- Blog entries-->
-        <div class="col-lg-8">
+        <div class="col-lg-9">
             <!-- Featured blog post-->
             <div class="card mb-4">
-                <a href="#!"><img class="card-img-top" src="https://dummyimage.com/850x350/dee2e6/6c757d.jpg" alt="..." /></a>
+               
+                <a href="#!"><img class="card-img-top" src="https://picsum.photos/850/350?grayscale&random=1" alt="..." /></a>
                 <div class="card-body">
-                    <div class="small text-muted">@DateTime.Now</div>
-                    <h2 class="card-title">Featured Post Title</h2>
-                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis aliquid atque, nulla? Quos cum ex quis soluta, a laboriosam. Dicta expedita corporis animi vero voluptate voluptatibus possimus, veniam magni quis!</p>
+                    <div class="small text-muted">
+
+                        @if (Model.MostLikedNote.ModifiedDate != null)
+                        {
+                            @Model.MostLikedNote.ModifiedDate
+                        }
+                        else
+                        {
+                            @Model.MostLikedNote.CreatedDate
+                        }
+
+                    </div>
+                    <h2 class="card-title">@Model.MostLikedNote.Title</h2>
+                    <p class="card-text">
+                        @Model.MostLikedNote.Text
+                    </p>
                     <a class="btn btn-primary" href="#!">Devamı →</a>
+                    <hr />
+                    <div class="ratings">
+                        <button class="btn btn-default btn-md" type="button" style="color: #e15959;" data-liked="false" data-note-id="@Model.MostLikedNote.ID">
+                            <span class="glyphicon glyphicon-heart-empty like-heart"></span>&nbsp;                  <span class="like-count">@Model.MostLikedNote.LikeCount</span>
+                        </button>
+                        <button class="btn btn-default btn-md" data-toggle="modal" data-target="#modal_comment" data-note-id="@Model.MostLikedNote.ID" style="color:#e15959;">
+                            <span class="glyphicon glyphicon-comment"></span> Yorumlar
+                        </button>
+
+                    </div>
                 </div>
             </div>
             <!-- Notlar-->
             <div class="row">
-                @foreach (Note item in Model)
+                @foreach (Note item in Model.Notes)
                 {
                     <div class="col-lg-4" data-note-id="@item.ID">
                         <!-- Blog post-->
@@ -79,8 +127,8 @@
 
                                     </h3>
                                 </div>
-                                
-                                
+
+
                                 <p class="card-text">
                                     @if (item.Text != null && item.Text.Length < 60)
                                     {
@@ -119,7 +167,7 @@
                     </div>
                 }
 
-               
+
             </div>
 
             <!-- Pagination-->
@@ -137,28 +185,7 @@
             </nav>
         </div>
 
-        <!-- Side widgets-->
-        <div class="col-lg-4">
-            <!-- Search widget-->
-            <div class="card mb-4">
-                <div class="card-header">Search</div>
-                <div class="card-body">
-                    <div class="input-group">
-                        <input class="form-control" type="text" placeholder="Enter search term..." aria-label="Enter search term..." aria-describedby="button-search" />
-                        <button class="btn btn-primary" id="button-search" type="button">Go!</button>
-                    </div>
-                </div>
-            </div>
-            <!-- Categories widget-->
-            <div class="card mb-4">
-                @Html.Partial("_PartialCategories")
-            </div>
-            <!-- Side widget-->
-            <div class="card mb-4">
-                <div class="card-header">Side Widget</div>
-                <div class="card-body">You can put anything you want inside of these side widgets. They are easy to use, and feature the Bootstrap 5 card component!</div>
-            </div>
-        </div>
+
     </div>
 </div>
 

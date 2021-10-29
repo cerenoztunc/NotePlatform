@@ -208,6 +208,7 @@
     <Compile Include="Models\CacheHelper.cs" />
     <Compile Include="Models\CurrentSession.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\NoteVM.cs" />
     <Compile Include="ViewModels\ErrrorViewModel.cs" />
     <Compile Include="ViewModels\InfoViewModel.cs" />
     <Compile Include="ViewModels\NotifyViewModelBase.cs" />
