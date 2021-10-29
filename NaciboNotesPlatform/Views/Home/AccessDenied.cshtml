@@ -1,0 +1,26 @@
+﻿
+@{
+    ViewBag.Title = "Yetkisiz Erişim";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-8 col-md-offset-2">
+        <h1>
+            <span class="glyphicon glyphicon-remove-circle"></span>
+            Yetkisiz Erişim
+        </h1>
+        <p>
+            Bu sayfaya erişim yetkiniz bulunmamaktadır...
+        </p>
+        <br /><br />
+        @MyBootstrap.LinkButton("/Home/Index", "primary", "","","home"," Ana Sayfaya Git!")
+
+    </div>
+</div>
+<script>
+    $(function () {
+        $("footer").hide();
+    });
+
+</script>

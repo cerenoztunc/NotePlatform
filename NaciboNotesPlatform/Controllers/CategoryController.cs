@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using NaciboNotesPlatform.Filters;
 using NaciboNotesPlatform.Models;
 using Project.BLL.DesignPatterns.GenericRepository.ConcRep;
 using Project.BLL.Managers;
@@ -13,6 +14,9 @@ using Project.ENTITIES.Models;
 
 namespace NaciboNotesPlatform.Controllers
 {
+    [Exc]
+    [Auth]
+    [AuthAdmin]
     public class CategoryController : Controller
     {
         CategoryManager _categoryManager;

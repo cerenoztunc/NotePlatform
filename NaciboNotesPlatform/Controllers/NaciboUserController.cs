@@ -6,12 +6,16 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using NaciboNotesPlatform.Filters;
 using Project.BLL.Managers;
 using Project.BLL.Results;
 using Project.ENTITIES.Models;
 
 namespace NaciboNotesPlatform.Controllers
 {
+    [Exc]
+    [Auth]
+    [AuthAdmin]
     public class NaciboUserController : Controller
     {
         private NaciboUserManager naciboUserManager = new NaciboUserManager();

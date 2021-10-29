@@ -7,17 +7,21 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using NaciboNotesPlatform.Data;
+using NaciboNotesPlatform.Filters;
 using NaciboNotesPlatform.Models;
 using Project.BLL.Managers;
 using Project.ENTITIES.Models;
 
 namespace NaciboNotesPlatform.Controllers
 {
+    [Exc]
     public class NoteController : Controller
     {
         NoteManager noteManager = new NoteManager();
         CategoryManager categoryManager = new CategoryManager();
         LikedManager likedManager = new LikedManager();
+
+        [Auth]
         public ActionResult Index()
         {
             var notes = noteManager.ListQuaryable()
@@ -28,6 +32,7 @@ namespace NaciboNotesPlatform.Controllers
             return View(notes.ToList());
         }
 
+        [Auth]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -41,6 +46,8 @@ namespace NaciboNotesPlatform.Controllers
             }
             return View(note);
         }
+
+        [Auth]
         public ActionResult MyLikedNotes()
         {
             var likednotes = likedManager.ListQuaryable()
@@ -54,12 +61,14 @@ namespace NaciboNotesPlatform.Controllers
  
             return View("Index", likednotes.ToList());
         }
+
+        [Auth]
         public ActionResult Create()
         {
             ViewBag.CategoryID = new SelectList(CacheHelper.GetCategoriesFromCache(), "ID", "Title");
             return View();
         }
-
+        [Auth]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(Note note)
@@ -74,6 +83,7 @@ namespace NaciboNotesPlatform.Controllers
             ViewBag.CategoryID = new SelectList(CacheHelper.GetCategoriesFromCache(), "ID", "Title", note.CategoryID);
             return View(note);
         }
+        [Auth]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -88,7 +98,7 @@ namespace NaciboNotesPlatform.Controllers
             ViewBag.CategoryID = new SelectList(CacheHelper.GetCategoriesFromCache(), "ID", "Title", note.CategoryID);
             return View(note);
         }
-
+        [Auth]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Note note)
@@ -107,6 +117,7 @@ namespace NaciboNotesPlatform.Controllers
             ViewBag.CategoryID = new SelectList(CacheHelper.GetCategoriesFromCache(), "ID", "Title", note.CategoryID);
             return View(note);
         }
+        [Auth]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -120,7 +131,7 @@ namespace NaciboNotesPlatform.Controllers
             }
             return View(note);
         }
-
+        [Auth]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)

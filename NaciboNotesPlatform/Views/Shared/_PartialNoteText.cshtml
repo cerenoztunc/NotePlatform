@@ -1,13 +1,13 @@
 ﻿@model Note
 
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-12 text-center">
         <h3> @Model.Title </h3>
     </div>
     <div class="col-md-12">
         <hr />
     </div>
-    <div class="col-md-12">
+    <div class="col-md-12 text-right">
         <span class="glyphicon glyphicon-user"></span>@Model.NaciboUser.UserName <br />
         <span class="glyphicon glyphicon-time"></span>
         @if (Model.ModifiedDate != null)
@@ -19,6 +19,9 @@
             @Model.CreatedDate
         }
 
+    </div>
+    <div class="col-md-12">
+        <hr />
     </div>
     <div class="col-md-12">
         <p class="text-justify">@Model.Text</p>

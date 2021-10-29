@@ -1,4 +1,5 @@
-﻿using NaciboNotesPlatform.Models;
+﻿using NaciboNotesPlatform.Filters;
+using NaciboNotesPlatform.Models;
 using Project.BLL.Managers;
 using Project.ENTITIES.Models;
 using System;
@@ -9,6 +10,7 @@ using System.Web.Mvc;
 
 namespace NaciboNotesPlatform.Controllers
 {
+    [Exc]
     public class CommentController : Controller
     {
         NoteManager noteManager = new NoteManager();
@@ -31,6 +33,7 @@ namespace NaciboNotesPlatform.Controllers
             return PartialView("_PartialComments",note.Comments.Where(x=>x.Status != Project.ENTITIES.Enums.DataStatus.Deleted).ToList());
         }
 
+        [Auth]
         [HttpPost]
         public ActionResult Edit(int? id, string text)
         {
@@ -51,6 +54,7 @@ namespace NaciboNotesPlatform.Controllers
             return Json(new { result = false }, JsonRequestBehavior.AllowGet);
 
         }
+        [Auth]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -69,6 +73,8 @@ namespace NaciboNotesPlatform.Controllers
             }
             return Json(new { result = false }, JsonRequestBehavior.AllowGet);
         }
+
+        [Auth]
         [HttpPost]
         public ActionResult Create(Comment comment, int? noteid)
         {

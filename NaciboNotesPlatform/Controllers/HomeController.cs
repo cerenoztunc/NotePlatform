@@ -1,4 +1,5 @@
 ﻿
+using NaciboNotesPlatform.Filters;
 using NaciboNotesPlatform.Models;
 using NaciboNotesPlatform.ViewModels;
 using Project.BLL;
@@ -18,6 +19,7 @@ using System.Web.Mvc;
 
 namespace NaciboNotesPlatform.Controllers
 {
+    [Exc]
     public class HomeController : Controller
     {
         NoteRep _noteRep;
@@ -33,6 +35,8 @@ namespace NaciboNotesPlatform.Controllers
         }
         public ActionResult Index()
         {
+            //throw new Exception("Herhangi bir hata"); //HasError sayfasını görmek için deneme
+
             //if (TempData["categoryNotes"] != null)
             //{
             //    return View(TempData["categoryNotes"] as List<Note>);
@@ -56,6 +60,8 @@ namespace NaciboNotesPlatform.Controllers
         {
             return View();
         }
+
+        [Auth]
         public ActionResult ShowProfile()
         {
             BussinessLayerResult<NaciboUser> res = num.GetUserById(CurrentSession.User.ID);
@@ -72,6 +78,7 @@ namespace NaciboNotesPlatform.Controllers
             return View(res.Result);
         }
 
+        [Auth]
         public ActionResult ShowNotes(NaciboUser naciboUser)
         {
             NaciboUser currentUser = Session["login"] as NaciboUser;
@@ -86,6 +93,8 @@ namespace NaciboNotesPlatform.Controllers
             
             return View(currentUser);
         }
+
+        [Auth]
         public ActionResult EditProfile()
         {
             BussinessLayerResult<NaciboUser> res = num.GetUserById(CurrentSession.User.ID);
@@ -102,6 +111,8 @@ namespace NaciboNotesPlatform.Controllers
             return View(res.Result);
 
         }
+
+        [Auth]
         [HttpPost]
         public ActionResult EditProfile(NaciboUser model, HttpPostedFileBase ProfileImage)
         {
@@ -137,6 +148,8 @@ namespace NaciboNotesPlatform.Controllers
             }
             return View(model);
         }
+
+        [Auth]
         public ActionResult DeleteProfile()
         {
             
@@ -243,6 +256,14 @@ namespace NaciboNotesPlatform.Controllers
         {
             Session.Clear();
             return RedirectToAction("Index");
+        }
+        public ActionResult AccessDenied()
+        {
+            return View();
+        }
+        public ActionResult HasError()
+        {
+            return View();
         }
     }
 }
