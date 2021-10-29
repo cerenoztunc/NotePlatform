@@ -10,31 +10,59 @@
     <div class="media">
         <div class="media-left media-top">
             <div class="media-object">
-                <span class="glyphicon glyphicon-comment"></span>
+                @if (item.NaciboUser.ProfileImageFileName == null)
+                {
+                    <img src="~/Images/profile.jpg" width="30" height="30" class="rounded-circle" />
+                }
+
+                else
+                {
+                    <img src="~/Images/@item.NaciboUser.ProfileImageFileName" width="30" height="30" class="rounded-circle" />
+                }
             </div>
         </div>
         <div class="media-body">
-            <div>
-                <span class="col-md-9" id="comment_text_@item.ID" contenteditable="false">
-                    @item.Text
-                </span>
-                @if (user != null && user.ID == item.NaciboUser.ID)
-                {
-                    <span class="col-md-3 text-right">
-                        <button type="button" class="btn btn-warning btn-xs" data-edit-mode="false" onclick="doComment(this, 'edit_clicked',@item.ID,'#comment_text_@item.ID');">
-                            <span class="glyphicon glyphicon-edit"></span>
-                        </button>
-                        <button type="button" class="btn btn-danger btn-xs" onclick="doComment(this, 'delete_clicked',@item.ID);">
-                            <span class="glyphicon glyphicon-trash"></span>
-                        </button>
+            <div class="mb-3">
+                <div class="row">
+                    <div class="col-md-8">
+                        <small class="text-muted ml-2">
+                            <span>
+                                @item.NaciboUser.UserName
+                            </span> &nbsp;&nbsp;
+                            <span class="mx-2">-</span>
+                            <span>
+                                @if (item.ModifiedDate != null)
+                                {
+                                    @item.ModifiedDate
+                                }
+                                else
+                                {
+                                    @item.CreatedDate
+                                }
+                            </span>
+                        </small>
 
+                    </div>
+                    <div class="col-md-4 text-right">
+
+                        @if (user != null && user.ID == item.NaciboUser.ID)
+                        {
+                            <button type="button" class="btn btn-light btn-sm" data-edit-mode="false" onclick="doComment(this, 'edit_clicked',@item.ID,'#comment_text_@item.ID');">
+                                <span class="glyphicon glyphicon-edit text-warning"></span>
+                            </button>
+                            <button type="button" class="btn btn-light btn-sm" onclick="doComment(this, 'delete_clicked',@item.ID);">
+                                <span class="glyphicon glyphicon-trash text-danger"></span>
+                            </button>
+                        }
+                    </div>
+                </div>
+                
+                <div class="col-md-12">
+                    <span class="glyphicon glyphicon-comment text-muted"></span>  &nbsp;
+                    <span id="comment_text_@item.ID" contenteditable="false">
+                        @item.Text
                     </span>
-                }
-
-                <small class="col-md-12">
-                    <span class="glyphicon glyphicon-time"></span> @item.CreatedDate &nbsp;
-                    <span class="glyphicon glyphicon-user"></span> @item.NaciboUser.UserName
-                </small>
+                </div>
             </div>
 
         </div>

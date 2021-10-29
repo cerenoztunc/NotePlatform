@@ -1,31 +1,27 @@
 ﻿@model Note
 
 <div class="row">
-    <div class="col-md-12 text-center">
+
+    <div class="col-md-12 mb-2">
         <h3> @Model.Title </h3>
     </div>
-    <div class="col-md-12">
-        <hr />
-    </div>
-    <div class="col-md-12 text-right">
-        <span class="glyphicon glyphicon-user"></span>@Model.NaciboUser.UserName <br />
-        <span class="glyphicon glyphicon-time"></span>
-        @if (Model.ModifiedDate != null)
-        {
-            @Model.ModifiedDate
-        }
-        else
-        {
-            @Model.CreatedDate
-        }
 
-    </div>
-    <div class="col-md-12">
-        <hr />
-    </div>
     <div class="col-md-12">
         <p class="text-justify">@Model.Text</p>
     </div>
-
+    <div class="col-md-12 text-right my-2">
+        <small class="text-muted">
+            <span class="glyphicon glyphicon-user"></span> @Model.NaciboUser.UserName
+            <span class="glyphicon glyphicon-time"></span>
+            @if (Model.ModifiedDate != null)
+            {
+                @Model.ModifiedDate
+            }
+            else
+            {
+                @Model.CreatedDate
+            }
+        </small>
+    </div>
 </div>
 

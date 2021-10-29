@@ -43,28 +43,58 @@ namespace NaciboNotesPlatform.Controllers
             //}
             var notes = _noteRep.GetActives().Where(x => x.IsDraft == false).OrderByDescending(x => x.CreatedDate).ToList();
             int mostLikedCount = notes.Max(x => x.LikeCount);
+
             var mostLikedNote = notes.FirstOrDefault(x => x.LikeCount == mostLikedCount);
+            notes.Remove(mostLikedNote);
+
 
             NoteVM viewModel = new NoteVM()
             {
                 MostLikedNote = mostLikedNote,
                 Notes = notes
             };
-            
+
 
             return View(viewModel);
         }
         public ActionResult ByCategory(int? id)
         {
+            int mostLikedCount = 0;
+            Note mostLikedNote = null;
             if (id == null) return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
+
+
+            List<Note> notes = _noteRep.ListQuaryable().Where( x => x.Status != Project.ENTITIES.Enums.DataStatus.Deleted && x.IsDraft == false && x.CategoryID == id).OrderByDescending(x => x.CreatedDate).ToList();
+
+            if (notes.Any())
+            {
+                mostLikedCount = notes.Max(x => x.LikeCount);
+                mostLikedNote = notes.FirstOrDefault(x => x.LikeCount == mostLikedCount);
+                notes.Remove(mostLikedNote);
+            }
            
-            List<Note> notes = _noteRep.ListQuaryable().Where(x => x.IsDraft == false && x.CategoryID == id).OrderByDescending(x => x.CreatedDate).ToList();
-            return View("Index", notes);
+
+            NoteVM viewModel = new NoteVM()
+            {
+                MostLikedNote = mostLikedNote,
+                Notes = notes
+            };
+
+            return View("Index", viewModel);
         }
         public ActionResult MostLiked()
         {
+            var mostLikedNotes = _noteRep.GetActives().OrderByDescending(x => x.LikeCount).ToList();
+            var mostLikedNote = mostLikedNotes.FirstOrDefault();
+            mostLikedNotes.Remove(mostLikedNote);
 
-            return View("Index", _noteRep.GetActives().OrderByDescending(x => x.LikeCount).ToList());
+            NoteVM viewModel = new NoteVM()
+            {
+                MostLikedNote = mostLikedNote,
+                Notes = mostLikedNotes
+            };
+
+            return View("Index", viewModel);
         }
         public ActionResult About()
         {
@@ -92,15 +122,15 @@ namespace NaciboNotesPlatform.Controllers
         public ActionResult ShowNotes(NaciboUser naciboUser)
         {
             NaciboUser currentUser = Session["login"] as NaciboUser;
-            if(naciboUser.Notes != null)
+            if (naciboUser.Notes != null)
             {
                 currentUser.Notes = _noteRep.Where(x => x.NaciboUser.Notes == naciboUser.Notes);
             }
-            else if(naciboUser == null)
+            else if (naciboUser == null)
             {
                 ViewBag.NoNote = "Not bulunmamaktadır.";
             }
-            
+
             return View(currentUser);
         }
 
@@ -139,7 +169,7 @@ namespace NaciboNotesPlatform.Controllers
                     model.ProfileImageFileName = filename;
                 }
 
-                
+
                 BussinessLayerResult<NaciboUser> res = num.UpdateProfile(model);
                 if (res.Errors.Count > 0)
                 {
@@ -162,7 +192,7 @@ namespace NaciboNotesPlatform.Controllers
         [Auth]
         public ActionResult DeleteProfile()
         {
-            
+
             BussinessLayerResult<NaciboUser> res = num.DeleteUserByID(CurrentSession.User.ID);
 
             if (res.Errors.Count > 0)
@@ -188,7 +218,7 @@ namespace NaciboNotesPlatform.Controllers
         {
             if (ModelState.IsValid)
             {
-                
+
                 BussinessLayerResult<NaciboUser> res = num.LoginUser(model);
 
                 if (res.Errors.Count > 0)
@@ -241,7 +271,7 @@ namespace NaciboNotesPlatform.Controllers
         }
         public ActionResult UserActivate(Guid id)
         {
-            
+
             BussinessLayerResult<NaciboUser> res = num.ActivateUser(id);
 
             if (res.Errors.Count > 0)

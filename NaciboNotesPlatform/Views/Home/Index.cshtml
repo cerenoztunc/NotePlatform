@@ -5,14 +5,6 @@
     ViewBag.Title = "Index";
 }
 
-@*<header class="py-5 bg-light border-bottom mb-4">
-        <div class="container">
-            <div class="text-center my-5">
-                <h1 class="fw-bolder">Welcome to Blog Home!</h1>
-                <p class="lead mb-0">A Bootstrap 5 starter layout for your next blog homepage</p>
-            </div>
-        </div>
-    </header>*@
 <!-- Page content-->
 <div class="container-fluid">
     <div class="row">
@@ -32,142 +24,198 @@
             <div class="card mb-3">
                 @Html.Partial("_PartialCategories")
             </div>
-            <!-- Side widget-->
-            @*<div class="card mb-3">
-                <div class="card-header">Side Widget</div>
-                <div class="card-body">You can put anything you want inside of these side widgets. They are easy to use, and feature the Bootstrap 5 card component!</div>
-            </div>*@
+          
         </div>
         <!-- Blog entries-->
         <div class="col-lg-9">
-            <!-- Featured blog post-->
-            <div class="card mb-4">
-               
-                <a href="#!"><img class="card-img-top" src="https://picsum.photos/850/350?grayscale&random=1" alt="..." /></a>
-                <div class="card-body">
-                    <div class="small text-muted">
 
-                        @if (Model.MostLikedNote.ModifiedDate != null)
-                        {
-                            @Model.MostLikedNote.ModifiedDate
-                        }
-                        else
-                        {
-                            @Model.MostLikedNote.CreatedDate
-                        }
-
-                    </div>
-                    <h2 class="card-title">@Model.MostLikedNote.Title</h2>
-                    <p class="card-text">
-                        @Model.MostLikedNote.Text
-                    </p>
-                    <a class="btn btn-primary" href="#!">Devamı →</a>
-                    <hr />
-                    <div class="ratings">
-                        <button class="btn btn-default btn-md" type="button" style="color: #e15959;" data-liked="false" data-note-id="@Model.MostLikedNote.ID">
-                            <span class="glyphicon glyphicon-heart-empty like-heart"></span>&nbsp;                  <span class="like-count">@Model.MostLikedNote.LikeCount</span>
-                        </button>
-                        <button class="btn btn-default btn-md" data-toggle="modal" data-target="#modal_comment" data-note-id="@Model.MostLikedNote.ID" style="color:#e15959;">
-                            <span class="glyphicon glyphicon-comment"></span> Yorumlar
-                        </button>
-
-                    </div>
-                </div>
-            </div>
-            <!-- Notlar-->
-            <div class="row row-cols-1 row-cols-md-2">
-                @foreach (Note item in Model.Notes)
-                {
-                    <div class="col-lg-4" data-note-id="@item.ID">
-                        <!-- Blog post-->
+            @if (Model.Notes == null || Model.Notes.Count == 0)
+            {
+                <div class="row">
+                    <div class="col-md-12">
                         <div class="card mb-4">
-                            <a href="#!">
-                                <img class="card-img-top" src="https://picsum.photos/700/350?grayscale&random=@(Model.Notes.IndexOf(item) % 10)" alt="@item.Title" />
-                            </a>
                             <div class="card-body">
-                                <h3 class="card-title"> 
-                                        <a href="#" data-toggle="modal" data-target="#modal_notedetail" data-note-id="@item.ID">
-                                            @item.Title
-                                        </a>
-                                </h3>
-
-                                <p class="card-text">
-                                    @if (string.IsNullOrEmpty(item.Text) == false && item.Text.Length > 70)
-                                    {
-                                        @(item.Text.Substring(0,70) +"...")
-
-                                    }
-                                    else
-                                    {
-                                        @item.Text
-                                        
-                                    }
-
-                                </p>
-                                
-                                <div class="small text-muted pull-right">
-                                    <span class="glyphicon glyphicon-user"></span>
-                                    @if (item.NaciboUser.UserName == null)
-                                    {
-                                        @(item.NaciboUser.UserName = "cerenoztunc")
-
-                                    }
-                                    else
-                                    {
-                                        @item.NaciboUser.UserName
-                                    }
-                                <br />
-                                    <span class="glyphicon glyphicon-time"></span>
-                                    @if (item.ModifiedDate != null)
-                                    {
-                                        @item.ModifiedDate
-                                    }
-                                    else
-                                    {
-                                        @item.CreatedDate
-                                    }
-                                </div>
-                                
+                                <h2>
+                                    <span class="glyphicon glyphicon-alert text-nowrap"></span>
+                                    Bu kategoride not bulunmamaktadır. Yeni not eklemek için
+                                    <a href="/Note/Create">
+                                        tıklayınız!
+                                    </a>
+                                </h2>
                             </div>
-                            <div class="card-footer">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="ratings">
-                                            <button class="btn btn-light" style="color: #e15959;" data-liked="false" data-note-id="@item.ID">
-                                                <span class="glyphicon glyphicon-heart-empty like-heart"></span>&nbsp;                  <span class="like-count">@item.LikeCount</span>
-                                            </button>
-                                            <button class="btn btn-light" data-toggle="modal" data-target="#modal_comment" data-note-id="@item.ID" style="color:#e15959;">
-                                                <span class="glyphicon glyphicon-comment"></span> @item.Comments.Count
-                                            </button>
+                            <a href="#!"><img class="card-img-top" src="https://picsum.photos/800/350?grayscale&random=1" alt="..." /></a>
 
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 text-right">
-                                        <a class="btn btn-light" href="#!" data-toggle="modal" data-target="#modal_notedetail" data-note-id="@item.ID">Detay <span class="glyphicon glyphicon-chevron-right"></span></a>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
 
                     </div>
-                }
+                </div>
+            }
+            else
+            {
+                <!-- Featured blog post-->
+                <div class="card mb-4">
+
+                    <a href="#!"><img class="card-img-top" src="https://picsum.photos/850/350?grayscale&random=1" alt="..." /></a>
+                    <div class="card-body">
+                        <h3 class="card-title">
+                            <a href="#" data-toggle="modal" data-target="#modal_notedetail" data-note-id="@Model.MostLikedNote.ID">
+                                @Model.MostLikedNote.Title
+                            </a>
+                        </h3>
+
+                        <p class="card-text">
+                            @if (string.IsNullOrEmpty(@Model.MostLikedNote.Text) == false && @Model.MostLikedNote.Text.Length > 70)
+                            {
+                                @(Model.MostLikedNote.Text.Substring(0,70) +"...")
+
+                            }
+                            else
+                            {
+                                @Model.MostLikedNote.Text
+
+                            }
+
+                        </p>
+
+                        <div class="text-muted pull-right">
+                            <span class="glyphicon glyphicon-user"></span>
+                            @if (Model.MostLikedNote.NaciboUser.UserName == null)
+                            {
+                                @(Model.MostLikedNote.NaciboUser.UserName = "cerenoztunc")
+
+                            }
+                            else
+                            {
+                                @Model.MostLikedNote.NaciboUser.UserName
+                            }
+                            <br />
+                            <span class="glyphicon glyphicon-time"></span>
+                            @if (Model.MostLikedNote.ModifiedDate != null)
+                            {
+                                @Model.MostLikedNote.ModifiedDate
+                            }
+                            else
+                            {
+                                @Model.MostLikedNote.CreatedDate
+                            }
+                        </div>
+
+                    </div>
+                    <div class="card-footer">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="ratings">
+                                    <button class="btn btn-light" style="color: #e15959;" data-liked="false" data-note-id="@Model.MostLikedNote.ID">
+                                        <span class="glyphicon glyphicon-heart-empty like-heart"></span>&nbsp;                  <span class="like-count">@Model.MostLikedNote.LikeCount</span>
+                                    </button>
+                                    <button class="btn btn-light" data-toggle="modal" data-target="#modal_comment" data-note-id="@Model.MostLikedNote.ID" style="color:#e15959;">
+                                        <span class="glyphicon glyphicon-comment"></span> @Model.MostLikedNote.Comments.Count
+                                    </button>
+
+                                </div>
+                            </div>
+                            <div class="col-md-6 text-right">
+                                <a class="btn btn-light" href="#!" data-toggle="modal" data-target="#modal_notedetail" data-note-id="@Model.MostLikedNote.ID">Detay <span class="glyphicon glyphicon-chevron-right"></span></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Notlar-->
+                <div class="row row-cols-1 row-cols-md-2">
+                    @foreach (Note item in Model.Notes)
+                    {
+                        <div class="col-lg-4" data-note-id="@item.ID">
+                            <!-- Blog post-->
+                            <div class="card mb-4">
+                                <a href="#!">
+                                    <img class="card-img-top" src="https://picsum.photos/700/350?grayscale&random=@(Model.Notes.IndexOf(item) % 10)" alt="@item.Title" />
+                                </a>
+                                <div class="card-body">
+                                    <h3 class="card-title">
+                                        <a href="#" data-toggle="modal" data-target="#modal_notedetail" data-note-id="@item.ID">
+                                            @item.Title
+                                        </a>
+                                    </h3>
+
+                                    <p class="card-text">
+                                        @if (string.IsNullOrEmpty(item.Text) == false && item.Text.Length > 70)
+                                        {
+                                            @(item.Text.Substring(0,70) +"...")
+
+                                        }
+                                        else
+                                        {
+                                            @item.Text
+
+                                        }
+
+                                    </p>
+
+                                    <div class="small text-muted pull-right">
+                                        <span class="glyphicon glyphicon-user"></span>
+                                        @if (item.NaciboUser.UserName == null)
+                                        {
+                                            @(item.NaciboUser.UserName = "cerenoztunc")
+
+                                        }
+                                        else
+                                        {
+                                            @item.NaciboUser.UserName
+                                        }
+                                        <br />
+                                        <span class="glyphicon glyphicon-time"></span>
+                                        @if (item.ModifiedDate != null)
+                                        {
+                                            @item.ModifiedDate
+                                        }
+                                        else
+                                        {
+                                            @item.CreatedDate
+                                        }
+                                    </div>
+
+                                </div>
+                                <div class="card-footer">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="ratings">
+                                                <button class="btn btn-light" style="color: #e15959;" data-liked="false" data-note-id="@item.ID">
+                                                    <span class="glyphicon glyphicon-heart-empty like-heart"></span>&nbsp;                  <span class="like-count">@item.LikeCount</span>
+                                                </button>
+                                                <button class="btn btn-light" data-toggle="modal" data-target="#modal_comment" data-note-id="@item.ID" style="color:#e15959;">
+                                                    <span class="glyphicon glyphicon-comment"></span> @item.Comments.Count
+                                                </button>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 text-right">
+                                            <a class="btn btn-light" href="#!" data-toggle="modal" data-target="#modal_notedetail" data-note-id="@item.ID">Detay <span class="glyphicon glyphicon-chevron-right"></span></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    }
 
 
-            </div>
+                </div>
+                <!-- Pagination-->
+                <nav aria-label="Pagination">
+                    <hr class="my-0" />
+                    <ul class="pagination justify-content-center my-4">
+                        <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1" aria-disabled="true">Newer</a></li>
+                        <li class="page-item active" aria-current="page"><a class="page-link" href="#!">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#!">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#!">3</a></li>
+                        <li class="page-item disabled"><a class="page-link" href="#!">...</a></li>
+                        <li class="page-item"><a class="page-link" href="#!">15</a></li>
+                        <li class="page-item"><a class="page-link" href="#!">Older</a></li>
+                    </ul>
+                </nav>
+            }
 
-            <!-- Pagination-->
-            <nav aria-label="Pagination">
-                <hr class="my-0" />
-                <ul class="pagination justify-content-center my-4">
-                    <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1" aria-disabled="true">Newer</a></li>
-                    <li class="page-item active" aria-current="page"><a class="page-link" href="#!">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#!">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#!">3</a></li>
-                    <li class="page-item disabled"><a class="page-link" href="#!">...</a></li>
-                    <li class="page-item"><a class="page-link" href="#!">15</a></li>
-                    <li class="page-item"><a class="page-link" href="#!">Older</a></li>
-                </ul>
-            </nav>
+
         </div>
 
 
@@ -175,7 +223,7 @@
 </div>
 
 @MyBootstrap.ModalPopup(id: "modal_comment", title: "Yorumlar")
-@MyBootstrap.ModalPopup(id: "modal_notedetail", title: "Tüm Not")
+@MyBootstrap.ModalPopup(id: "modal_notedetail", title: "Detay")
 
 <script src="~/Scripts/comment.js"></script>
 <script src="~/Scripts/like.js"></script>
