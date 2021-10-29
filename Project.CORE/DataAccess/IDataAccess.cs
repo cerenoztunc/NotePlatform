@@ -23,7 +23,7 @@ namespace Project.BLL.DesignPatterns.GenericRepository.IntRep
         void DeleteRange(List<T> list);
         int Update(T item);
         void UpdateRange(List<T> list);
-        void Destroy(T item);
+        int Destroy(T item);
         void DestroyRange(List<T> list);
        
 

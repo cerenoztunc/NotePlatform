@@ -32,7 +32,10 @@
                 <th>
                     @Html.DisplayNameFor(model => model.IsDraft)
                 </th>
-               
+                <th>
+                    @Html.DisplayNameFor(model => model.LikeCount)
+                </th>
+
                 <th></th>
             </tr>
 
@@ -51,12 +54,18 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.IsDraft)
                     </td>
-                    
-                    <td>
-                        @MyBootstrap.LinkButton("/Note/Edit/" + item.ID, "warning", "btn-sm", "Edit", "edit", string.Empty)
-                        @MyBootstrap.LinkButton("/Note/Details/" + item.ID, "info", "btn-sm", "Details", "search", string.Empty)
-                        @MyBootstrap.LinkButton("/Note/Delete/" + item.ID, "danger", "btn-sm", "Delete", "trash", string.Empty)
-                       
+                     <td>
+                        @Html.DisplayFor(modelItem => item.LikeCount)
+                    </td>
+
+                    <td width="150px">
+                        <button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#modal_comment" data-note-id="@item.ID">
+                            <span class="glyphicon glyphicon-comment"></span>
+                        </button>
+                        @MyBootstrap.LinkButton("/Note/Edit/" + item.ID, "warning", "btn-xs", "Edit", "edit", string.Empty)
+                        @MyBootstrap.LinkButton("/Note/Details/" + item.ID, "info", "btn-xs", "Details", "search", string.Empty)
+                        @MyBootstrap.LinkButton("/Note/Delete/" + item.ID, "danger", "btn-xs", "Delete", "trash", string.Empty)
+
                     </td>
                 </tr>
             }
@@ -65,6 +74,9 @@
     </div>
 
 </div>
+@MyBootstrap.ModalPopup(id: "modal_comment", title: "Yorumlar")
+
+<script src="~/Scripts/comment.js"></script>
 
 <script>
     $(function () {

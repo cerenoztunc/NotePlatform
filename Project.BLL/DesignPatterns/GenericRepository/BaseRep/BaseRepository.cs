@@ -63,10 +63,10 @@ namespace Project.BLL.DesignPatterns.GenericRepository.BaseRep
             }
         }
 
-        public void Destroy(T item)
+        public int Destroy(T item)
         {
             _db.Set<T>().Remove(item);
-            Save();
+            return Save();
         }
 
         public void DestroyRange(List<T> list)

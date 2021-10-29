@@ -56,7 +56,7 @@ namespace NaciboNotesPlatform.Controllers
         }
         public ActionResult Create()
         {
-            ViewBag.CategoryID = new SelectList(categoryManager.GetActives(), "ID", "Title");
+            ViewBag.CategoryID = new SelectList(CacheHelper.GetCategoriesFromCache(), "ID", "Title");
             return View();
         }
 
@@ -71,7 +71,7 @@ namespace NaciboNotesPlatform.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.CategoryID = new SelectList(categoryManager.GetActives(), "ID", "Title", note.CategoryID);
+            ViewBag.CategoryID = new SelectList(CacheHelper.GetCategoriesFromCache(), "ID", "Title", note.CategoryID);
             return View(note);
         }
         public ActionResult Edit(int? id)
@@ -85,7 +85,7 @@ namespace NaciboNotesPlatform.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.CategoryID = new SelectList(categoryManager.GetActives(), "ID", "Title", note.CategoryID);
+            ViewBag.CategoryID = new SelectList(CacheHelper.GetCategoriesFromCache(), "ID", "Title", note.CategoryID);
             return View(note);
         }
 
@@ -104,7 +104,7 @@ namespace NaciboNotesPlatform.Controllers
                 noteManager.Update(n);
                 return RedirectToAction("Index");
             }
-            ViewBag.CategoryID = new SelectList(categoryManager.GetActives(), "ID", "Title", note.CategoryID);
+            ViewBag.CategoryID = new SelectList(CacheHelper.GetCategoriesFromCache(), "ID", "Title", note.CategoryID);
             return View(note);
         }
         public ActionResult Delete(int? id)
@@ -129,6 +129,93 @@ namespace NaciboNotesPlatform.Controllers
             noteManager.Delete(note);
 
             return RedirectToAction("Index");
+        }
+        [HttpPost]
+        public ActionResult GetLiked(int[] ids)
+        {
+            if (CurrentSession.User != null)
+            {
+                int userid = CurrentSession.User.ID;
+                List<int> likedNoteIds = new List<int>();
+
+                if (ids != null)
+                {
+                    likedNoteIds = likedManager.List(
+                        x => x.LikedUser.ID == userid && ids.Contains(x.Note.ID)).Select(
+                        x => x.Note.ID).ToList();
+                }
+                else
+                {
+                    likedNoteIds = likedManager.List(
+                        x => x.LikedUser.ID == userid).Select(
+                        x => x.Note.ID).ToList();
+                }
+
+                return Json(new { result = likedNoteIds });
+            }
+            else
+            {
+                return Json(new { result = new List<int>() });
+            }
+        }
+        [HttpPost]
+        public ActionResult SetLikeState(int noteid, bool liked)
+        {
+            int res = 0;
+
+            if (CurrentSession.User == null)
+                return Json(new { hasError = true, errorMessage = "Beğenme işlemi için giriş yapmalısınız.", result = 0 });
+
+            Liked like =
+                likedManager.FirstOrDefault(x => x.Note.ID == noteid && x.LikedUser.ID == CurrentSession.User.ID);
+
+            Note note = noteManager.FirstOrDefault(x => x.ID == noteid);
+
+            if (like != null && liked == false)
+            {
+                res = likedManager.Delete(like);
+            }
+            else if (like == null && liked == true)
+            {
+                res = likedManager.Add(new Liked()
+                {
+                    LikedUser = CurrentSession.User,
+                    Note = note
+                });
+            }
+
+            if (res > 0)
+            {
+                if (liked)
+                {
+                    note.LikeCount++;
+                }
+                else
+                {
+                    note.LikeCount--;
+                }
+
+                res = noteManager.Update(note);
+
+                return Json(new { hasError = false, errorMessage = string.Empty, result = note.LikeCount });
+            }
+
+            return Json(new { hasError = true, errorMessage = "Beğenme işlemi gerçekleştirilemedi.", result = note.LikeCount });
+        }
+        public ActionResult GetNoteText(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            Note note = noteManager.Find(id.Value);
+
+            if (note == null)
+            {
+                return HttpNotFound();
+            }
+            return PartialView("_PartialNoteText", note);
         }
 
     }

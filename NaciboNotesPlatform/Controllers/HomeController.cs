@@ -1,4 +1,5 @@
 ﻿
+using NaciboNotesPlatform.Models;
 using NaciboNotesPlatform.ViewModels;
 using Project.BLL;
 using Project.BLL.DesignPatterns.GenericRepository.ConcRep;
@@ -37,20 +38,14 @@ namespace NaciboNotesPlatform.Controllers
             //    return View(TempData["categoryNotes"] as List<Note>);
             //}
 
-            return View(_noteRep.GetActives().OrderByDescending(x => x.CreatedDate).ToList());
+            return View(_noteRep.GetActives().Where(x=>x.IsDraft == false).OrderByDescending(x => x.CreatedDate).ToList());
         }
         public ActionResult ByCategory(int? id)
         {
             if (id == null) return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
-            Category c = _categoryRep.Find(id.Value);
-
-            if (c == null)
-            {
-                return HttpNotFound();
-            }
-            
-
-            return View("Index", c.Notes.OrderByDescending(x => x.CreatedDate).ToList());
+           
+            List<Note> notes = _noteRep.ListQuaryable().Where(x => x.IsDraft == false && x.CategoryID == id).OrderByDescending(x => x.CreatedDate).ToList();
+            return View("Index", notes);
         }
         public ActionResult MostLiked()
         {
@@ -63,9 +58,7 @@ namespace NaciboNotesPlatform.Controllers
         }
         public ActionResult ShowProfile()
         {
-            NaciboUser currentUser = Session["login"] as NaciboUser;
-             
-            BussinessLayerResult<NaciboUser> res = num.GetUserById(currentUser.ID);
+            BussinessLayerResult<NaciboUser> res = num.GetUserById(CurrentSession.User.ID);
             if (res.Errors.Count > 0)
             {
                 ErrrorViewModel error = new ErrrorViewModel
@@ -95,9 +88,7 @@ namespace NaciboNotesPlatform.Controllers
         }
         public ActionResult EditProfile()
         {
-            NaciboUser currentUser = Session["login"] as NaciboUser;
-            
-            BussinessLayerResult<NaciboUser> res = num.GetUserById(currentUser.ID);
+            BussinessLayerResult<NaciboUser> res = num.GetUserById(CurrentSession.User.ID);
             if (res.Errors.Count > 0)
             {
                 ErrrorViewModel error = new ErrrorViewModel
@@ -140,7 +131,7 @@ namespace NaciboNotesPlatform.Controllers
                     return View("Error", messages);
                 }
 
-                Session["login"] = res.Result;
+                CurrentSession.Set<NaciboUser>("login", res.Result); //Profil güncellendiği için session güncellenmeli
 
                 return RedirectToAction("ShowProfile");
             }
@@ -148,9 +139,8 @@ namespace NaciboNotesPlatform.Controllers
         }
         public ActionResult DeleteProfile()
         {
-            NaciboUser currentUser = Session["login"] as NaciboUser;
-           
-            BussinessLayerResult<NaciboUser> res = num.DeleteUserByID(currentUser.ID);
+            
+            BussinessLayerResult<NaciboUser> res = num.DeleteUserByID(CurrentSession.User.ID);
 
             if (res.Errors.Count > 0)
             {
@@ -190,7 +180,7 @@ namespace NaciboNotesPlatform.Controllers
                     return View(model);
                 }
 
-                Session["login"] = res.Result;
+                CurrentSession.Set<NaciboUser>("login", res.Result); //Session'a kullanıcı bilgisi saklama
 
                 return RedirectToAction("Index");
             }

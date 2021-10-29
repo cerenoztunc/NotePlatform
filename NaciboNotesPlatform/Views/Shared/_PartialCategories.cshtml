@@ -1,8 +1,8 @@
 ﻿@using Project.BLL.Managers
-
+@using NaciboNotesPlatform.Models
 @{ 
-    CategoryManager _cMan = new CategoryManager();
-    List<Category> list = _cMan.GetActives(); 
+
+    List<Category> list = CacheHelper.GetCategoriesFromCache();
  }
 
 <div class="card-header">Kategoriler</div>

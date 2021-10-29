@@ -8,13 +8,13 @@ namespace NaciboNotesPlatform.Models
 {
     public class CurrentSession
     {
-        public static NaciboUser User 
+        public static NaciboUser User
         {
-            get {
-
-                return Get<NaciboUser>("login");   
+            get
+            {
+                return Get<NaciboUser>("login");
             }
-        
+
         }
         public static void Set<T>(string key, T obj)
         {
@@ -22,11 +22,11 @@ namespace NaciboNotesPlatform.Models
         }
         public static T Get<T>(string key)
         {
-            if(HttpContext.Current.Session[key] != null)
+            if (HttpContext.Current.Session[key] != null)
             {
                 return (T)HttpContext.Current.Session[key];
             }
-            return default(T);
+            return default;
         }
 
         public static void Remove(string key)

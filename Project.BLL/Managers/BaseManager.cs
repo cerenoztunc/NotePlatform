@@ -36,7 +36,7 @@ namespace Project.BLL.Managers
 
         public virtual int Delete(T item)
         {
-            return repo.Delete(item);
+            return repo.Destroy(item);
         }
 
         public void DeleteRange(List<T> list)
@@ -47,10 +47,10 @@ namespace Project.BLL.Managers
             }
         }
 
-        public void Destroy(T item)
+        public int Destroy(T item)
         {
             repo.Destroy(item);
-            Save();
+            return Save();
         }
 
         public void DestroyRange(List<T> list)

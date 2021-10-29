@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using NaciboNotesPlatform.Models;
 using Project.BLL.DesignPatterns.GenericRepository.ConcRep;
 using Project.BLL.Managers;
 using Project.ENTITIES.Models;
@@ -50,6 +51,9 @@ namespace NaciboNotesPlatform.Controllers
             if (ModelState.IsValid)
             {
                 _categoryManager.Add(category);
+
+                CacheHelper.RemoveCategoriesFromCache();
+
                 return RedirectToAction("Index");
             }
 
@@ -77,6 +81,9 @@ namespace NaciboNotesPlatform.Controllers
             if (ModelState.IsValid)
             {
                 _categoryManager.Update(category);
+
+                CacheHelper.RemoveCategoriesFromCache();
+
                 return RedirectToAction("Index");
             }
             return View(category);
@@ -102,6 +109,9 @@ namespace NaciboNotesPlatform.Controllers
         {
             Category category = _categoryManager.FirstOrDefault(x => x.ID == id);
             _categoryManager.Delete(category);
+
+            CacheHelper.RemoveCategoriesFromCache();
+
             return RedirectToAction("Index");
         }
 

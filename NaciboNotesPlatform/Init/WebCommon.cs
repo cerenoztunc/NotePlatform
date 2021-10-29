@@ -1,4 +1,5 @@
-﻿using Project.COMMON;
+﻿using NaciboNotesPlatform.Models;
+using Project.COMMON;
 using Project.ENTITIES.Models;
 using System;
 using System.Collections.Generic;
@@ -11,12 +12,9 @@ namespace NaciboNotesPlatform.Init
     {
         public string GetCurrentUsername()
         {
-            if(HttpContext.Current.Session["login"] != null)
-            {
-                NaciboUser user = HttpContext.Current.Session["login"] as NaciboUser;
-                return user.UserName;
-            }
-            return "system";
+            NaciboUser user = CurrentSession.User;
+            if (user != null) return user.UserName;
+            else return "system";
         }
     }
 }
