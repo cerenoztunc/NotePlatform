@@ -4,32 +4,35 @@
     
 }
 
-
-<div class="container">
-    <div class="row">
-        <h2>@ViewBag.Title</h2>
-        <hr />
-    </div>
-
-    <div class="row">
-        <div class="col-md-2 login-container">
-            <div class="avatar">
-                <img src="~/Images/@Model.ProfileImageFileName" class="img-circle" width="128" height="128" />
-            </div>
-        </div>
-        <div class="col-md-10">
-            <h3>@(Model.FirstName + " " + Model.LastName)</h3>
-            <br />
-            <h5><b>Kullanıcı Adı:</b>@Model.UserName</h5>
-            <h5><b>E-mail:</b>@Model.Email</h5>
-            <br />
-            <h5><a href="@Url.Action("ShowNotes")">Notlar..</a></h5>
-
-        </div>
-       
+<div class="row p-lg-5 pt-3">
+    <div class="col-md-12 m-5">
+        <p class="display-4 border-bottom">
+            Kullanıcı Hesabı
+        </p>
     </div>
 
 </div>
+
+<div class="row p-5">
+    <div class="col-md-2 login-container">
+        <div class="avatar">
+            <img src="~/Images/@Model.ProfileImageFileName" class="rounded-circle" width="128" height="128" />
+        </div>
+    </div>
+    <div class="col-md-10">
+        <h3 class="display-5 mb-4">@(Model.FirstName + " " + Model.LastName)</h3>
+        <p>
+            <h5><b>Kullanıcı Adı:</b> @Model.UserName</h5>
+            <h5><b>E-mail:</b> @Model.Email</h5>
+        </p>
+
+        <p class="mt-4"><a href="/Home/EditProfile">More..</a></p>
+
+    </div>
+   
+</div>
+
+
 
 <script>
     $(function () {

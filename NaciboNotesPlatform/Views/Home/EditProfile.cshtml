@@ -7,16 +7,19 @@
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 
-<div class="container">
-    <div class="row">
-        <h2>@ViewBag.Title</h2>
-        <hr />
+<div class="row p-lg-5 pt-3">
+    <div class="col-md-12 m-5">
+        <p class="display-4 border-bottom">
+            Profil Düzenle
+        </p>
     </div>
-    <div class="row">
-        @using (Html.BeginForm("EditProfile", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
-        {
-            <div class="form-horizontal">
-                <div class="col-md-3">
+</div>
+
+<div class="row p-5">
+    @using (Html.BeginForm("EditProfile", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div class="form-horizontal">
+            <div class="col-md-3">
                     <img src="~/Images/@Model.ProfileImageFileName" class="avatar img-circle" width="128" height="128" />
                     @Html.HiddenFor(model => model.ProfileImageFileName)
                     <br /><br />
@@ -24,7 +27,7 @@
                     <span class="glyphicon glyphicon-info-sign">&nbsp;</span>
                     <span><i>Lütfen jpg,jpeg ya da png formatı kullanın.</i></span>
                 </div>
-                <div class="col-md-5">
+            <div class="col-md-5">
                     @Html.ValidationSummary(false)
                     @Html.HiddenFor(x => x.ID)
 
@@ -66,14 +69,14 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
+            <div class="col-md-4">
                     &nbsp;
                 </div>
-            </div>
-        }
-    </div>
-
+        </div>
+    }
 </div>
+
+
 <script>
     $(function () {
         $("footer").hide();

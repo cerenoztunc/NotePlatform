@@ -6,73 +6,79 @@
 }
 <link href="~/Content/Validation-Summary.css" rel="stylesheet" />
 
-<div class="row">
-    <div class="col-md-8 col-md-offset-2">
-        <h2>Create</h2>
+<div class="container">
+    <div class="row pt-3 mr-0 mb-0">
+        <div class="col-md-12 m-5 mb-0">
+            <p class="display-4 border-bottom">
+                Not Ekle
+            </p>
+        </div>
+
     </div>
-</div>
+    <div class="row mr-0 p-0">
+        <div class="col-md-12 ">
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
 
-<div class="row">
-    <div class="col-md-8 col-md-offset-2">
-        @using (Html.BeginForm())
-        {
-            @Html.AntiForgeryToken()
-
-            <div class="form-horizontal">
-                <h4>Note</h4>
-                <hr />
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                <div class="form-group row">
+                    <div class="col-md-12 pr-0">
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                     </div>
                 </div>
 
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Text, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.TextAreaFor(model => model.Text, 5, 30, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.Text, "", new { @class = "text-danger" })
+                <div class="form-horizontal m-5">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                        </div>
                     </div>
-                </div>
 
-                <div class="form-group">
-                    @Html.LabelFor(model => model.IsDraft, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        <div class="checkbox">
-                            @Html.EditorFor(model => model.IsDraft)
-                            @Html.ValidationMessageFor(model => model.IsDraft, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Text, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.TextAreaFor(model => model.Text, 5, 30, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Text, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.IsDraft, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            <div class="checkbox">
+                                @Html.EditorFor(model => model.IsDraft)
+                                @Html.ValidationMessageFor(model => model.IsDraft, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.CategoryID, "Kategori", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.DropDownList("CategoryID", null, htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.CategoryID, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            @MyBootstrap.Button("success", string.Empty, "submit", "plus", " Create")
+                            @MyBootstrap.LinkButton("/Note/Index", "default", string.Empty, string.Empty, "arrow-left", " Back to List")
+
                         </div>
                     </div>
                 </div>
+            }
 
-                <div class="form-group">
-                    @Html.LabelFor(model => model.CategoryID, "Kategori", htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.DropDownList("CategoryID", null, htmlAttributes: new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.CategoryID, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        @MyBootstrap.Button("success", string.Empty, "submit", "plus", " Create")
-                        @MyBootstrap.LinkButton("/Note/Index", "default", string.Empty, string.Empty, "arrow-left", " Back to List")
-                        
-                    </div>
-                </div>
-            </div>
-        }
-
+        </div>
     </div>
 </div>
 
+    <script>
+        $(function () {
+            $("footer").hide();
+        });
 
-<script>
-    $(function () {
-        $("footer").hide();
-    });
-
-</script>
+    </script>
