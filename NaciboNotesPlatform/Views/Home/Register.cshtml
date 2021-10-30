@@ -15,37 +15,49 @@
 
 @using (Html.BeginForm())
 {
-    <div class="container">
-        <div class="login-container">
-            <div id="output"></div>
-            <h4 class="text-center"> <span class="glyphicon glyphicon-user" aria-hidden="true"></span> Kayıt Formu </h4>
-            <hr />
-            
-              @Html.ValidationSummary(false)
-        <br />
-            
-           
-            @*<div class="avatar">
-               
-            </div>*@
-        <div class="form-box">
-            @Html.TextBoxFor(x => x.Username, new { name = "user", placeholder = "Kullanıcı adı", type = "text" })
-            @Html.TextBoxFor(x => x.Email, new { placeholder = "e-posta adresi", type = "text" })
-            @Html.TextBoxFor(x => x.Password, new { placeholder = "şifre", type = "password" })
-            @Html.TextBoxFor(x => x.RePassword, new { placeholder = "şifre tekrar", type = "password" })
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-4 m-0">
+            <div class="login-container">
+                <div id="output"></div>
+                <h4 class="text-center"> <span class="glyphicon glyphicon-user" aria-hidden="true"></span> Kayıt Formu </h4>
+                <hr />
+
+                @Html.ValidationSummary(false)
+                <br />
+
+                <div class="form-box">
+                    @Html.TextBoxFor(x => x.Username, new { name = "user", placeholder = "Kullanıcı adı", type = "text" })
+                    @Html.TextBoxFor(x => x.Email, new { placeholder = "e-posta adresi", type = "text" })
+                    @Html.TextBoxFor(x => x.Password, new { placeholder = "şifre", type = "password" })
+                    @Html.TextBoxFor(x => x.RePassword, new { placeholder = "şifre tekrar", type = "password" })
 
 
-            <button class="btn btn-info btn-block login" type="submit">Kayıt Ol</button>
+                    <button class="btn btn-info btn-block login" type="submit">Kayıt Ol</button>
+
+                </div>
+            </div>
 
         </div>
-        </div>
+        <div class="col-md-8 card mb-4">
+            <a href="#!"><img class="card-img-top" src="https://picsum.photos/3100/1780?&random=1" alt="..." /></a>
+            <div class="card-body">
+                <h2>
+                    <span class="glyphicon glyphicon-cloud text-info"></span>
+                    Welcome to Heaven!
 
+                </h2>
+            </div>
+
+
+        </div>
     </div>
-}
-<script>
-    $(function () {
-        $("footer").hide();
-    });
+ </div>
+        }
+        <script>
+            $(function () {
+                $("footer").hide();
+            });
 
-</script>
+        </script>
 
